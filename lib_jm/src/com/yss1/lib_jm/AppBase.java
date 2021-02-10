@@ -23,6 +23,7 @@ import java.util.Set;
 
 /**
  * @author ys
+ *
  */
 public abstract class AppBase extends SimpleApplication
         implements

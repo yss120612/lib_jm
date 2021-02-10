@@ -7,15 +7,14 @@ package com.yss1.lib_jm;
 //import com.yss1.lib_jm.WaiterObject.WAITERTYPE;
 
 /**
- *
  * @author ys
  */
 public class WaiterElement {
- public static enum WAITERTYPE{
+    public static enum WAITERTYPE {
         EMPTY_TYPE,
         START_NET_GAME,
         DATA_RECEIVED,
-        SUCCESS_SEND,ERROR_SEND,
+        SUCCESS_SEND, ERROR_SEND,
         AD_LOADED,
         AD_CLOSED,
         AD_NEED,
@@ -35,20 +34,21 @@ public class WaiterElement {
         PRIKUP_OK,
         GET_PRIKUP
     }
- 
+
     private float time;
     private boolean timed;
 
     public boolean isTimed() {
         return timed;
     }
+
     private boolean wait;
     private IExecutor executor;
     //private final WaiterObject parametr = new WaiterObject();
     private String info;
     private WAITERTYPE type;
-    
-     private void initPar(WAITERTYPE type, String info) {
+
+    private void initPar(WAITERTYPE type, String info) {
         this.info = info;
         this.type = type;
     }
@@ -60,7 +60,7 @@ public class WaiterElement {
     public String getInfo() {
         return info;
     }
-        
+
     public WaiterElement(IExecutor ex) {
         executor = ex;
     }
@@ -73,12 +73,7 @@ public class WaiterElement {
         return wait;
     }
 
-//    public WaiterElement setTime(float time) {
-//        this.time = time;
-//        wait = true;
-//        timed = true;
-//        return this;
-//    }
+
 
     public WaiterElement setExecutor(IExecutor executor) {
         this.executor = executor;
@@ -103,11 +98,12 @@ public class WaiterElement {
         initPar(tp, s);
         return this;
     }
-    
+
     /**
      * call execute when time is<=0
+     *
      * @param t
-     * @return 
+     * @return
      */
     public boolean action(float t) {
         if (!timed || !wait) {
@@ -124,7 +120,8 @@ public class WaiterElement {
 
     /**
      * call execute when first call this action
-     * @return 
+     *
+     * @return
      */
     public boolean action() {
         if (timed || !wait) {
@@ -134,14 +131,14 @@ public class WaiterElement {
         executor.execute(this);
         return true;
     }
-    
+
     public boolean reset(WAITERTYPE wt) {
-        if (wait && wt==type) {
+        if (wait && wt == type) {
             wait = false;
             return true;
         }
         return false;
     }
-    
-    
+
+
 }
