@@ -148,7 +148,7 @@ public class Button3d {
         acontrol.addAnim(new Animation("Idle", 0));
         rotate = ROT.Y;
     }
-
+//region get XY
     public float getDx() {
         return Dx;
     }
@@ -156,11 +156,7 @@ public class Button3d {
     public float getDy() {
         return Dy;
     }
-
-    public BEHAVIOR getBehav() {
-        return behav;
-    }
-
+//endregion
     public void initRadio(List<Button3d> al, int grp, boolean chk) {
         radio_list = al;
         rgroup = grp;
@@ -237,6 +233,10 @@ public class Button3d {
                 }
             }
         }
+    }
+
+    public BEHAVIOR getBehav() {
+        return behav;
     }
 
     public void setBehav(BEHAVIOR behav) {
