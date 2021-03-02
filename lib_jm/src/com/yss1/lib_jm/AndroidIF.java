@@ -42,6 +42,7 @@ public interface AndroidIF  {
   public void writeLog(String theme);
   public void getInput(int dt,String tit, String sinit);
   public void showMessage(String t, String m);
+  public void showInfo(String t);
   public void rate(String what);
   public void sendEventGA(String app,String s);
   //public String getName();

@@ -260,6 +260,13 @@ public abstract class AppBase extends SimpleApplication
         }
     }
 
+    public void showAndroidInfo(String t) {
+        if (androidIF != null) {
+            androidIF.showInfo(t);
+        }
+    }
+
+
     //Load && Save
     public void saveSettInt(String k, int v) {
         if (androidIF != null) {
