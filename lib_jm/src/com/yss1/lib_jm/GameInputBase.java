@@ -22,7 +22,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 
-import sun.rmi.runtime.Log;
+//import sun.rmi.runtime.Log;
 
 /**
  * @author ys

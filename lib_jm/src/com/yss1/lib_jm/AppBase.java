@@ -118,6 +118,29 @@ public abstract class AppBase extends SimpleApplication
         this.androidIF = aif;
     }
 
+
+
+    public void signOut(boolean sog) {
+        if (androidIF != null) {
+            androidIF.signOut(sog);
+        }
+    }
+
+
+    public void signIn() {
+        if (androidIF != null) {
+            androidIF.signIn();
+        }
+    }
+
+
+    public boolean isSignedIn() {
+        if (androidIF != null) {
+            return androidIF.isSignedIn();
+        }
+        return false;
+    }
+
     public void showInterstitial() {
         if (androidIF != null) {
             androidIF.displayInterstitial();
@@ -129,6 +152,8 @@ public abstract class AppBase extends SimpleApplication
             androidIF.loadAd();
         }
     }
+
+
 
     public boolean isBannerVisible(){
         if (androidIF != null) {
@@ -147,9 +172,9 @@ public abstract class AppBase extends SimpleApplication
         return androidIF != null && androidIF.isInterstitialLoaded();
     }
 
-    public boolean isSignedIn() {
-        return (androidIF != null && androidIF.gp_isSignedIn());
-    }
+    //public boolean isSignedIn() {
+    //    return (androidIF != null && androidIF.gp_isSignedIn());
+    //}
 
     public void connect() {
         if (androidIF != null && !androidIF.gp_isSignedIn()) androidIF.gp_Connect();

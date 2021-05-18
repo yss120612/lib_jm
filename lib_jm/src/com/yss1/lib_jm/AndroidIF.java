@@ -46,7 +46,9 @@ public interface AndroidIF  {
   public void rate(String what);
   public void sendEventGA(String app,String s);
   //public String getName();
-  
+  public void signIn();
+  public void signOut(boolean signout_google);
+  public boolean isSignedIn();
   
   public boolean gp_isSignedIn();
   public void gp_Connect();
