@@ -4,6 +4,10 @@
  */
 package com.yss1.lib_jm;
 
+import com.jme3.anim.AnimClip;
+import com.jme3.anim.AnimComposer;
+import com.jme3.anim.AnimFactory;
+import com.jme3.anim.MorphTrack;
 import com.yss1.lib_jm.Card.State;
 import com.jme3.animation.Animation;
 import com.jme3.animation.AnimationFactory;
@@ -39,13 +43,38 @@ public class CardAnimatorBase {
     public void animate2endpoint(Card CA, float aTime,int steps, String name)
     {
         if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
+        AnimFactory animationFactory = new AnimFactory(6f, name, 25f);
         AnimationFactory af=new AnimationFactory(aTime,name,steps);
-        af.addTimeTransform(0, CA.getGe().getLocalTransform());
+        animationFactory.addTimeTransform(0,CA.getGe().getLocalTransform());
+//        animationFactory.addTimeTranslation(0,CA.getGe().getLocalTransform().getTranslation());
+//        animationFactory.addTimeScale(0,CA.getGe().getLocalTransform().getScale());
+//        animationFactory.addTimeRotation(0,CA.getGe().getLocalTransform().getRotation());
+        //af.addTimeTransform(0, CA.getGe().getLocalTransform());
         Vector3f tmpSv=ToolsBase.vPool.getV3(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
+        //animationFactory.addTimeTranslation(aTime,CA.getEndpointM());
+        //animationFactory.addTimeScale(aTime,tmpSv);
+        //animationFactory.addTimeRotation(aTime,CA.getEndpointRq());
+
         af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+        //MorphTrack mt =
+        //AnimClip ac=af.buildAnimation();
+
+        AnimClip clip = animationFactory.buildAnimation(CA.getGe());
+
+        AnimComposer control = new AnimComposer();
+
+        //control.addAnimClip(clip);
+
+        //model.addControl(control);
+
+        //rootNode.attachChild(model);
+
+        //run animation
+        control.setCurrentAction("anim");
+
+
         Animation an=af.buildAnimation();
         ToolsBase.vPool.freeV3(tmpSv);
-       // if (CA.getControl().getAnim(name)!=null) CA.getControl().removeAnim(CA.getControl().getAnim(name));
         CA.getControl().addAnim(an);
         CA.getChannel().setAnim(name);
         CA.getChannel().setLoopMode(LoopMode.DontLoop);
@@ -76,6 +105,7 @@ public class CardAnimatorBase {
         tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
         af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
         Animation an=af.buildAnimation();
+        //AnimComposer ac;
         ToolsBase.vPool.freeV3(tmpSv);
         ToolsBase.vPool.freeV3(tmpMv);
         ToolsBase.vPool.freeQt(Q1);

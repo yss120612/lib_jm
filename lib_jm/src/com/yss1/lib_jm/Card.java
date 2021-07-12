@@ -4,6 +4,8 @@
  */
 package com.yss1.lib_jm;
 
+import com.jme3.anim.AnimClip;
+import com.jme3.anim.AnimComposer;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
@@ -48,7 +50,10 @@ public class Card implements Comparable {
     private Vector3f endpointM;//Конечнное положение трансформации
     private Vector3f endpointRv;
     private Quaternion endpointRq;
+    private float endpointS;
     private AnimControl control;
+    private AnimComposer acomposer;
+    AnimComposer control1;
     private int stockNo;
     
     public Card(RessKeeper stk, String n) {
@@ -297,7 +302,7 @@ public class Card implements Comparable {
         setEndpointRq(C.getEndpointRq());
         setEndpointS(C.getEndpointS());
     }
-    private float endpointS;
+
 
     public float getEndpointS() {
         return endpointS;
@@ -417,7 +422,7 @@ public class Card implements Comparable {
         owner = 'N';
         state = State.FACE;
         rating = new int[]{0, 0, 0, 0, 0, 0, 0};
-        int i = rKeep.getRess().getTX_H();
+        //int i = rKeep.getRess().getTX_H();
     }
     private Vector3f vdiff;
 
@@ -526,6 +531,10 @@ public class Card implements Comparable {
         Mesh ME = ToolsBase.makeSimple2planes(cW, cH, cTH, tx);
         ge = new Geometry(getName(), ME);
         ge.setQueueBucket(RenderQueue.Bucket.Opaque);
+        acomposer=new AnimComposer();
+        ge.addControl(acomposer);
+        acomposer.
+
         control = new AnimControl();
         control.addListener(AEL);
         ge.addControl(control);
