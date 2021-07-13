@@ -17,5 +17,5 @@ public interface RessKeeper {
     public Node getRootNode();
     public ButtonListener getButtonListener(String s);
     public CardAnimatorBase getAnimator();
-    public AnimEventListener getGameAEL();
+    public AnimClipListener getGameAnimClipListener();
 }

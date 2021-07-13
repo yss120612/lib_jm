@@ -51,9 +51,8 @@ public class Card implements Comparable {
     private Vector3f endpointRv;
     private Quaternion endpointRq;
     private float endpointS;
+    private Vector3f vdiff;
     private AnimControl control;
-    private AnimComposer acomposer;
-    AnimComposer control1;
     private int stockNo;
     
     public Card(RessKeeper stk, String n) {
@@ -424,7 +423,7 @@ public class Card implements Comparable {
         rating = new int[]{0, 0, 0, 0, 0, 0, 0};
         //int i = rKeep.getRess().getTX_H();
     }
-    private Vector3f vdiff;
+
 
     public void setDiff(Geometry plane, Vector3f v0, Vector3f vCam, boolean flyUp) {//v0 точка, кде коснулись карты в координатах RootNode
         float dx = v0.x; 
@@ -500,7 +499,7 @@ public class Card implements Comparable {
         return su;
     }
 
-    public void initGeometry(AnimEventListener AEL, int cBG) {
+    public void initGeometry(AnimClipListener AEL, int cBG) {
         endpointM = new Vector3f();
         endpointRv = new Vector3f();
         endpointRq = new Quaternion();
@@ -531,15 +530,17 @@ public class Card implements Comparable {
         Mesh ME = ToolsBase.makeSimple2planes(cW, cH, cTH, tx);
         ge = new Geometry(getName(), ME);
         ge.setQueueBucket(RenderQueue.Bucket.Opaque);
-        acomposer=new AnimComposer();
-        ge.addControl(acomposer);
-        acomposer.
+        AnimComposerYss animComposerYss=new AnimComposerYss();
+        animComposerYss.setAnimClipListener(AEL);
+        ge.addControl(animComposerYss);
 
-        control = new AnimControl();
-        control.addListener(AEL);
-        ge.addControl(control);
-        control.addAnim(new Animation("Idle", 0));
-        channel = control.createChannel();
+        //acomposer.
+
+        //control = new AnimControl();
+        //control.addListener(AEL);
+        //ge.addControl(control);
+        //control.addAnim(new Animation("Idle", 0));
+        //channel = control.createChannel();
     }
     
 

@@ -403,7 +403,7 @@ public abstract class AppBase extends SimpleApplication
     }
 
     @Override
-    public AnimEventListener getGameAEL() {
+    public AnimClipListener getGameAnimClipListener() {
         return null;
     }
 

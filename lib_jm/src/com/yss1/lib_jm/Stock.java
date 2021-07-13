@@ -47,7 +47,7 @@ public Stock(RessKeeper a, int n, int bk, boolean has_jockers) {//n==2,6,7,9
 
                 for (int j = 1; j < 5; j++) {
                     Cr = new Card(ap,k,i,j);
-                    Cr.initGeometry(ap.getGameAEL(), background);
+                    Cr.initGeometry(ap.getGameAnimClipListener(), background);
                     Cr.getGe().setMaterial(ap.getRess().getMaterial("Общий"));
                     cards.add(Cr);
                 }
@@ -56,11 +56,12 @@ public Stock(RessKeeper a, int n, int bk, boolean has_jockers) {//n==2,6,7,9
 
         if (has_jockers) {
             Cr = new Card(ap, "RC");
-            Cr.initGeometry(ap.getGameAEL(),  background);
+            //Cr.initGeometry(ap.getGameAEL(),  background);
+            Cr.initGeometry(ap.getGameAnimClipListener(),  background);
             Cr.getGe().setMaterial(ap.getRess().getMaterial("Общий"));
             cards.add(Cr);
             Cr = new Card(ap, "RD");
-            Cr.initGeometry(ap.getGameAEL(), background);
+            Cr.initGeometry(ap.getGameAnimClipListener(), background);
             Cr.getGe().setMaterial(ap.getRess().getMaterial("Общий"));
             cards.add(Cr);
         }

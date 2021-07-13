@@ -42,10 +42,19 @@ public class CardAnimatorBase {
     
     public void animate2endpoint(Card CA, float aTime,int steps, String name)
     {
-        if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
-        AnimFactory animationFactory = new AnimFactory(6f, name, 25f);
-        AnimationFactory af=new AnimationFactory(aTime,name,steps);
-        animationFactory.addTimeTransform(0,CA.getGe().getLocalTransform());
+        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        if (animComposer==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for " + name);
+        }
+
+        if (animComposer.getAction(name)!=null) animComposer.removeAction(name);
+        AnimClip clip=animComposer.getAnimClip(name);
+        if (clip!=null) animComposer.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(aTime, name, 25f);
+       // AnimationFactory af=new AnimationFactory(aTime,name,steps);
+        animFactory.addTimeTransform(0,CA.getGe().getLocalTransform());
 //        animationFactory.addTimeTranslation(0,CA.getGe().getLocalTransform().getTranslation());
 //        animationFactory.addTimeScale(0,CA.getGe().getLocalTransform().getScale());
 //        animationFactory.addTimeRotation(0,CA.getGe().getLocalTransform().getRotation());
@@ -55,13 +64,15 @@ public class CardAnimatorBase {
         //animationFactory.addTimeScale(aTime,tmpSv);
         //animationFactory.addTimeRotation(aTime,CA.getEndpointRq());
 
-        af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+        animFactory.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
         //MorphTrack mt =
         //AnimClip ac=af.buildAnimation();
 
-        AnimClip clip = animationFactory.buildAnimation(CA.getGe());
+        clip = animFactory.buildAnimation(CA.getGe());
 
-        AnimComposer control = new AnimComposer();
+        animComposer.addAnimClip(clip);
+        animComposer.setCurrentAction(name);
+
 
         //control.addAnimClip(clip);
 
@@ -70,14 +81,14 @@ public class CardAnimatorBase {
         //rootNode.attachChild(model);
 
         //run animation
-        control.setCurrentAction("anim");
+        //control.setCurrentAction("anim");
 
 
-        Animation an=af.buildAnimation();
+        //Animation an=af.buildAnimation();
         ToolsBase.vPool.freeV3(tmpSv);
-        CA.getControl().addAnim(an);
-        CA.getChannel().setAnim(name);
-        CA.getChannel().setLoopMode(LoopMode.DontLoop);
+        //CA.getControl().addAnim(an);
+        //CA.getChannel().setAnim(name);
+        //CA.getChannel().setLoopMode(LoopMode.DontLoop);
     }
     
     public void animate3endpointInv(Card CA, float aTime,int steps, String name,float dx,float dy,float dz)//в средней точке отклонение
@@ -88,10 +99,44 @@ public class CardAnimatorBase {
     
     public void animate3endpoint(Card CA, float aTime,int steps, String name,float dx,float dy,float dz)//в средней точке отклонение
     {
-        if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
-        AnimationFactory af=new AnimationFactory(aTime,name,steps);
-        //StartPoint
-        af.addTimeTransform(0, CA.getGe().getLocalTransform());
+//        if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
+//        AnimationFactory af=new AnimationFactory(aTime,name,steps);
+//        //StartPoint
+//        af.addTimeTransform(0, CA.getGe().getLocalTransform());
+//        //MiddlePoint
+//        Vector3f tmpSv=ToolsBase.vPool.getV3((CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f);
+//        Vector3f tmpMv=ToolsBase.vPool.getV3(CA.getGe().getLocalTranslation().interpolateLocal(CA.getEndpointM(), 0.5f));
+//        tmpMv.x+=dx;
+//        tmpMv.y+=dy;
+//        tmpMv.z+=dz;
+//        Quaternion Q1=ToolsBase.vPool.getQt(CA.getEndpointRq());
+//        Q1.slerp(CA.getGe().getLocalRotation(),0.5f);
+//        af.addTimeTransform(aTime/2f, new Transform(tmpMv,Q1,tmpSv));
+//        //EndPoint
+//        tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
+//        af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+//        Animation an=af.buildAnimation();
+//        //AnimComposer ac;
+//        ToolsBase.vPool.freeV3(tmpSv);
+//        ToolsBase.vPool.freeV3(tmpMv);
+//        ToolsBase.vPool.freeQt(Q1);
+//        CA.getControl().addAnim(an);
+//        CA.getChannel().setAnim(name);
+//        CA.getChannel().setLoopMode(LoopMode.DontLoop);
+
+
+        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        if (animComposer==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for " + name);
+        }
+
+        if (animComposer.getAction(name)!=null) animComposer.removeAction(name);
+        AnimClip clip=animComposer.getAnimClip(name);
+        if (clip!=null) animComposer.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(aTime, name, 25f);
+        animFactory.addTimeTransform(0,CA.getGe().getLocalTransform());
         //MiddlePoint
         Vector3f tmpSv=ToolsBase.vPool.getV3((CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f);
         Vector3f tmpMv=ToolsBase.vPool.getV3(CA.getGe().getLocalTranslation().interpolateLocal(CA.getEndpointM(), 0.5f));
@@ -100,18 +145,22 @@ public class CardAnimatorBase {
         tmpMv.z+=dz;
         Quaternion Q1=ToolsBase.vPool.getQt(CA.getEndpointRq());
         Q1.slerp(CA.getGe().getLocalRotation(),0.5f);
-        af.addTimeTransform(aTime/2f, new Transform(tmpMv,Q1,tmpSv));
+        animFactory.addTimeTransform(aTime/2f,new Transform(tmpMv,Q1,tmpSv));
         //EndPoint
         tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
-        af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
-        Animation an=af.buildAnimation();
-        //AnimComposer ac;
+        animFactory.addTimeTransform(aTime,new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+
+        clip = animFactory.buildAnimation(CA.getGe());
+
+        animComposer.addAnimClip(clip);
+        animComposer.setCurrentAction(name);
+
         ToolsBase.vPool.freeV3(tmpSv);
         ToolsBase.vPool.freeV3(tmpMv);
         ToolsBase.vPool.freeQt(Q1);
-        CA.getControl().addAnim(an);
-        CA.getChannel().setAnim(name);
-        CA.getChannel().setLoopMode(LoopMode.DontLoop);
+//        CA.getControl().addAnim(an);
+//        CA.getChannel().setAnim(name);
+//        CA.getChannel().setLoopMode(LoopMode.DontLoop);
     }
     
     public void moveOnDeskPreUp(Card CA, float aTime,int steps, String name, float h,float preh)
@@ -124,45 +173,107 @@ public class CardAnimatorBase {
     {
        float A;
        if (CA.getState()==State.BACK) {A=FastMath.HALF_PI;CA.invertState();} else A=FastMath.PI;
-       if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
-       AnimationFactory af=new AnimationFactory(aTime,name,steps);
-       //StartPoint
-       af.addTimeTransform(0, CA.getGe().getLocalTransform());
-       //MiddlePoint
-       Vector3f tmpRv=ToolsBase.vPool.getV3(1f,0,0);
-       Vector3f tmpSv=ToolsBase.vPool.getV3((CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f);
-       Vector3f tmpMv=ToolsBase.vPool.getV3(CA.getGe().getLocalTranslation());
-       tmpMv=tmpMv.interpolateLocal(CA.getEndpointM(), 0.5f);
-       tmpMv.z+=h;
-       Quaternion Q1=ToolsBase.vPool.getQt().fromAngleNormalAxis(A, tmpRv);
-       Q1=CA.getGe().getLocalRotation().mult(Q1);
-       af.addTimeTransform(aTime/2f, new Transform(tmpMv,Q1,tmpSv));
-       //EndPoint
-       tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
-       af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
-       //and animate It
-       Animation an=af.buildAnimation();
-       ToolsBase.vPool.freeQt(Q1);
-       ToolsBase.vPool.freeV3(tmpSv);
-       ToolsBase.vPool.freeV3(tmpRv);
-       CA.getControl().addAnim(an);
-       CA.getChannel().setAnim(name);
-       CA.getChannel().setLoopMode(LoopMode.DontLoop);
+//       if (CA.getControl().getAnimationNames().contains(name)) CA.getControl().removeAnim(CA.getControl().getAnim(name));
+//       AnimationFactory af=new AnimationFactory(aTime,name,steps);
+//       //StartPoint
+//       af.addTimeTransform(0, CA.getGe().getLocalTransform());
+//       //MiddlePoint
+//       Vector3f tmpRv=ToolsBase.vPool.getV3(1f,0,0);
+//       Vector3f tmpSv=ToolsBase.vPool.getV3((CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f);
+//       Vector3f tmpMv=ToolsBase.vPool.getV3(CA.getGe().getLocalTranslation());
+//       tmpMv=tmpMv.interpolateLocal(CA.getEndpointM(), 0.5f);
+//       tmpMv.z+=h;
+//       Quaternion Q1=ToolsBase.vPool.getQt().fromAngleNormalAxis(A, tmpRv);
+//       Q1=CA.getGe().getLocalRotation().mult(Q1);
+//       af.addTimeTransform(aTime/2f, new Transform(tmpMv,Q1,tmpSv));
+//       //EndPoint
+//       tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
+//       af.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+//       //and animate It
+//       Animation an=af.buildAnimation();
+//       ToolsBase.vPool.freeQt(Q1);
+//       ToolsBase.vPool.freeV3(tmpSv);
+//       ToolsBase.vPool.freeV3(tmpRv);
+//       CA.getControl().addAnim(an);
+//       CA.getChannel().setAnim(name);
+//       CA.getChannel().setLoopMode(LoopMode.DontLoop);
+        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        if (animComposer==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for " + name);
+        }
+
+        if (animComposer.getAction(name)!=null) animComposer.removeAction(name);
+        AnimClip clip=animComposer.getAnimClip(name);
+        if (clip!=null) animComposer.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(aTime, name, 25f);
+        animFactory.addTimeTransform(0,CA.getGe().getLocalTransform());
+
+
+        //MiddlePoint
+        Vector3f tmpRv=ToolsBase.vPool.getV3(1f,0,0);
+        Vector3f tmpSv=ToolsBase.vPool.getV3((CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f,(CA.getGe().getLocalScale().x+CA.getEndpointS())/2f);
+        Vector3f tmpMv=ToolsBase.vPool.getV3(CA.getGe().getLocalTranslation());
+        tmpMv=tmpMv.interpolateLocal(CA.getEndpointM(), 0.5f);
+        tmpMv.z+=h;
+        Quaternion Q1=ToolsBase.vPool.getQt().fromAngleNormalAxis(A, tmpRv);
+        Q1=CA.getGe().getLocalRotation().mult(Q1);
+        animFactory.addTimeTransform(aTime/2f, new Transform(tmpMv,Q1,tmpSv));
+
+        //EndPoint
+        tmpSv.set(CA.getEndpointS(),CA.getEndpointS(),CA.getEndpointS());
+        animFactory.addTimeTransform(aTime, new Transform(CA.getEndpointM(),CA.getEndpointRq(),tmpSv));
+
+        //and animate It
+        clip = animFactory.buildAnimation(CA.getGe());
+        animComposer.addAnimClip(clip);
+        animComposer.setCurrentAction(name);
+
+        ToolsBase.vPool.freeQt(Q1);
+        ToolsBase.vPool.freeV3(tmpSv);
+        ToolsBase.vPool.freeV3(tmpRv);
+
     }
 
     public void animateShift(Card CA, float aTime,int steps, float x, float y, float z) {
-        if (CA.getControl().getAnimationNames().contains("Shift")) CA.getControl().removeAnim(CA.getControl().getAnim("Shift"));
-        AnimationFactory af=new AnimationFactory(aTime,"Shift",steps);
+//        if (CA.getControl().getAnimationNames().contains("Shift")) CA.getControl().removeAnim(CA.getControl().getAnim("Shift"));
+//        AnimationFactory af=new AnimationFactory(aTime,"Shift",steps);
+//        Transform tr=CA.getGe().getLocalTransform();
+//        af.addTimeTransform(0,tr);
+//        tr.getTranslation().x+=x;
+//        tr.getTranslation().y+=y;
+//        tr.getTranslation().z+=z;
+//        af.addTimeTransform(aTime, tr);
+//        Animation an=af.buildAnimation();
+//        CA.getControl().addAnim(an);
+//        CA.getChannel().setAnim("Shift");
+//        CA.getChannel().setLoopMode(LoopMode.DontLoop);
+
+        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        if (animComposer==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for Shift");
+        }
+
+        if (animComposer.getAction("Shift")!=null) animComposer.removeAction("Shift");
+        AnimClip clip=animComposer.getAnimClip("Shift");
+        if (clip!=null) animComposer.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(aTime, "Shift", 25f);
         Transform tr=CA.getGe().getLocalTransform();
-        af.addTimeTransform(0,tr);
+        animFactory.addTimeTransform(0,tr);
+
         tr.getTranslation().x+=x;
         tr.getTranslation().y+=y;
         tr.getTranslation().z+=z;
-        af.addTimeTransform(aTime, tr);
-        Animation an=af.buildAnimation();
-        CA.getControl().addAnim(an);
-        CA.getChannel().setAnim("Shift");
-        CA.getChannel().setLoopMode(LoopMode.DontLoop);
+        animFactory.addTimeTransform(aTime, tr);
+
+        //and animate It
+        clip = animFactory.buildAnimation(CA.getGe());
+        animComposer.addAnimClip(clip);
+        animComposer.setCurrentAction("Shift");
+
     }
 
     
