@@ -198,7 +198,8 @@ public class RessBase {
         if (transp) {
             Mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
             Mat.setFloat("AlphaDiscardThreshold", 0.5f);
-            Mat.getAdditionalRenderState().setAlphaFallOff(0.5f);
+            //Mat.getAdditionalRenderState().setAlphaFallOff(0.5f);
+            Mat.setFloat("AlphaDiscardThreshold", 0.5f);
         }
         return Mat;
     }
