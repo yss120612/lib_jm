@@ -27,9 +27,9 @@ public class DeskBase {
     protected Geometry ge;
     protected Geometry trPlane;
     protected Node myNode;
-    protected AnimControl acontrol;
-    protected AnimChannel achannel;
-    
+    //protected AnimControl acontrol;
+    //protected AnimChannel achannel;
+    AnimComposerYss animComposerYss;
     protected char [] main_pannels;
     protected char [] more_pannels;
     
@@ -37,6 +37,8 @@ public class DeskBase {
     {
         app=a;
         myNode=new Node("pBase");
+        //animComposerYss=new AnimComposerYss();
+        //myNode.addControl(animComposerYss);
     }
     
     public void init()
@@ -77,8 +79,8 @@ public class DeskBase {
      
      public void idleCoin()
     {  
-     achannel.setAnim("Idle");
-     achannel.setLoopMode(LoopMode.DontLoop);
+     //achannel.setAnim("Idle");
+     //achannel.setLoopMode(LoopMode.DontLoop);
      myNode.detachChild(coin);
     }
    

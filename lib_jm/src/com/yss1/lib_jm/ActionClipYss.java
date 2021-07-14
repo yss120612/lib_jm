@@ -10,8 +10,19 @@ import com.jme3.anim.tween.action.ClipAction;
 public class ActionClipYss extends ClipAction {
     protected AnimClipListener animClipListener;
     protected AnimComposer animComposer;
+
+    public boolean isLoop() {
+        return loop;
+    }
+
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    protected boolean loop;
+
     public ActionClipYss(AnimClip clip){
-        super(clip);
+        super(clip);loop=false;
     }
 
     public void setAnimComposer(AnimComposer animComposer){

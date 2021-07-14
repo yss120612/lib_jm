@@ -7,11 +7,7 @@ package com.yss1.lib_jm;
 import com.jme3.anim.AnimClip;
 import com.jme3.anim.AnimComposer;
 import com.jme3.anim.AnimFactory;
-import com.jme3.anim.MorphTrack;
 import com.yss1.lib_jm.Card.State;
-import com.jme3.animation.Animation;
-import com.jme3.animation.AnimationFactory;
-import com.jme3.animation.LoopMode;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Transform;
@@ -71,7 +67,9 @@ public class CardAnimatorBase {
         clip = animFactory.buildAnimation(CA.getGe());
 
         animComposer.addAnimClip(clip);
+
         animComposer.setCurrentAction(name);
+        //((ActionClipYss)animComposer.getAction(name)).setLoop(true);
 
 
         //control.addAnimClip(clip);
@@ -125,7 +123,7 @@ public class CardAnimatorBase {
 //        CA.getChannel().setLoopMode(LoopMode.DontLoop);
 
 
-        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        AnimComposer animComposer=CA.animComposerYss;
         if (animComposer==null){
             //throw ("Anim composer is NULL!!!");
             throw new NullPointerException("Cannot find Anim composer for " + name);
@@ -197,7 +195,7 @@ public class CardAnimatorBase {
 //       CA.getControl().addAnim(an);
 //       CA.getChannel().setAnim(name);
 //       CA.getChannel().setLoopMode(LoopMode.DontLoop);
-        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        AnimComposer animComposer=CA.animComposerYss;
         if (animComposer==null){
             //throw ("Anim composer is NULL!!!");
             throw new NullPointerException("Cannot find Anim composer for " + name);
@@ -250,7 +248,7 @@ public class CardAnimatorBase {
 //        CA.getChannel().setAnim("Shift");
 //        CA.getChannel().setLoopMode(LoopMode.DontLoop);
 
-        AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        AnimComposer animComposer=CA.animComposerYss;
         if (animComposer==null){
             //throw ("Anim composer is NULL!!!");
             throw new NullPointerException("Cannot find Anim composer for Shift");

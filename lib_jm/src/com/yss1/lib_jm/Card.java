@@ -52,9 +52,9 @@ public class Card implements Comparable {
     private Quaternion endpointRq;
     private float endpointS;
     private Vector3f vdiff;
-    private AnimControl control;
     private int stockNo;
-    
+    public AnimComposerYss animComposerYss;
+
     public Card(RessKeeper stk, String n) {
         stockNo=0;
         rKeep = stk;
@@ -340,15 +340,16 @@ public class Card implements Comparable {
     }
 
     public void setIdleAnim() {
-        channel.setAnim("Idle", 0);
+        //channel.setAnim("Idle", 0);
+        animComposerYss.reset();
     }
 
     public String getAnim() {
-        return channel.getAnimationName();
+        return animComposerYss.getCurrentAction()!=null?animComposerYss.getCurrentAction().toString():"";
     }
 
     public boolean isIdle() {
-        return channel == null || channel.getAnimationName() == null || channel.getAnimationName().equals("Idle");
+        return animComposerYss == null || animComposerYss.getCurrentAction()==null;
     }
 
     public char getOwner() {
@@ -530,7 +531,7 @@ public class Card implements Comparable {
         Mesh ME = ToolsBase.makeSimple2planes(cW, cH, cTH, tx);
         ge = new Geometry(getName(), ME);
         ge.setQueueBucket(RenderQueue.Bucket.Opaque);
-        AnimComposerYss animComposerYss=new AnimComposerYss();
+        animComposerYss=new AnimComposerYss();
         animComposerYss.setAnimClipListener(AEL);
         ge.addControl(animComposerYss);
 
@@ -544,14 +545,14 @@ public class Card implements Comparable {
     }
     
 
-    public AnimControl getControl() {
-        return control;
-    }
-
-    public AnimChannel getChannel() {
-        return channel;
-    }
-    private AnimChannel channel;
+//    public AnimControl getControl() {
+//        return control;
+//    }
+//
+//    public AnimChannel getChannel() {
+//        return channel;
+//    }
+//    private AnimChannel channel;
 
     public void setRotatedEndpoint(boolean XorY) {
         //resetEndpoint();
@@ -606,8 +607,9 @@ public class Card implements Comparable {
     }
 
     public void reset() {
-        channel.setAnim("Idle");
-        channel.setLoopMode(LoopMode.DontLoop);
+        //channel.setAnim("Idle");
+        //channel.setLoopMode(LoopMode.DontLoop);
+        animComposerYss.reset();
         ge.setLocalTransform(Transform.IDENTITY);
         state = State.FACE;
     }

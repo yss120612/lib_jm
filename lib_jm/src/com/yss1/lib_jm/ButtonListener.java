@@ -16,5 +16,5 @@ public interface ButtonListener {
     public void selectRadio(String name);
     public void changeCheckbox(String name, boolean state);
     public Node getParentNode(String name);
-    public AnimEventListener getAEL();
+    AnimClipListener getAnimClipListener();
 }

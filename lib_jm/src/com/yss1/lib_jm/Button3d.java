@@ -4,23 +4,21 @@
  */
 package com.yss1.lib_jm;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
-import com.jme3.animation.Animation;
-import com.jme3.animation.AnimationFactory;
-import com.jme3.animation.LoopMode;
+import com.jme3.anim.AnimClip;
+import com.jme3.anim.AnimFactory;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.font.LineWrapMode;
+import com.jme3.font.Rectangle;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
-import com.jme3.font.Rectangle;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+
 import java.util.List;
 
 /**button
@@ -70,8 +68,8 @@ public class Button3d {
     private boolean snd_down;
     private float dPict;
     private int section;
-    private AnimControl acontrol;
-    private AnimChannel achannel;
+
+    protected AnimComposerYss animComposerYss;
     BitmapText txt;
     private int currTex;
     private int currImage;
@@ -140,12 +138,17 @@ public class Button3d {
         nodeBtn = new Node(name + "_node");
         nodeBtn.attachChild(ge);
 
-        acontrol = new AnimControl();
-        acontrol.addListener(BI.getAEL());
-        nodeBtn.addControl(acontrol);
+//        acontrol = new AnimControl();
+//        acontrol.addListener(BI.getAnimClipListener());
+//        nodeBtn.addControl(acontrol);
+//
+//        achannel = acontrol.createChannel();
+//        acontrol.addAnim(new Animation("Idle", 0));
 
-        achannel = acontrol.createChannel();
-        acontrol.addAnim(new Animation("Idle", 0));
+        animComposerYss=new AnimComposerYss();
+        animComposerYss.setAnimClipListener(BI.getAnimClipListener());
+        nodeBtn.addControl(animComposerYss);
+
         rotate = ROT.Y;
     }
 //region get XY
@@ -560,11 +563,17 @@ public class Button3d {
         } else {
             AName = "PressBunUp";
         }
-        if (!acontrol.getAnimationNames().contains(AName)) {
+//        if (!acontrol.getAnimationNames().contains(AName)) {
+//            makePressAnim(down, AName);
+//        }
+
+
+        if (!animComposerYss.hasAction(AName)) {
             makePressAnim(down, AName);
         }
-        achannel.setAnim(AName);
-        achannel.setLoopMode(LoopMode.DontLoop);
+        //achannel.setAnim(AName);
+        //achannel.setLoopMode(LoopMode.DontLoop);
+        animComposerYss.setCurrentAction(AName);
         isDown = down;
     }
 
@@ -575,12 +584,12 @@ public class Button3d {
             case ROTATE_2PI:
                 if (rotate == ROT.X) {
                     aName = "RotateBtnX2PI";
-                    if (!acontrol.getAnimationNames().contains(aName)) {
+                    if (!animComposerYss.hasAction(aName)) {
                         makeRotateAnimX2PI();
                     }
                 } else {
                     aName = "RotateBtnY2PI";
-                    if (!acontrol.getAnimationNames().contains(aName)) {
+                    if (!animComposerYss.hasAction(aName)) {
                         makeRotateAnimY2PI();
                     }
                 }
@@ -590,40 +599,42 @@ public class Button3d {
                 if (rotate == ROT.X) {
                     if (down) {
                         aName = "RotateBtnX0_PI";
-                        if (!acontrol.getAnimationNames().contains(aName)) {
+                        if (!animComposerYss.hasAction(aName)) {
                             makeRotateAnimX0_PI();
                         }
                     } else {
                         aName = "RotateBtnXPI_2PI";
-                        if (!acontrol.getAnimationNames().contains(aName)) {
+                        if (!animComposerYss.hasAction(aName)) {
                             makeRotateAnimXPI_2PI();
                         }
                     }
                 } else {
                     if (down) {
                         aName = "RotateBtnY0_PI";
-                        if (!acontrol.getAnimationNames().contains(aName)) {
+                        if (!animComposerYss.hasAction(aName)) {
                             makeRotateAnimY0_PI();
                         }
                     } else {
                         aName = "RotateBtnYPI_2PI";
-                        if (!acontrol.getAnimationNames().contains(aName)) {
+                        if (!animComposerYss.hasAction(aName)) {
                             makeRotateAnimYPI_2PI();
                         }
                     }
                 }
                 break;
         }
-        achannel.setAnim(aName);
-        achannel.setLoopMode(LoopMode.DontLoop);
+        //achannel.setAnim(aName);
+        //achannel.setLoopMode(LoopMode.DontLoop);
+        animComposerYss.setCurrentAction(aName);
     }
 
     public void resetAnim() {
-        if (achannel == null) {
-            return;
-        }
-        achannel.setAnim("Idle");
-        achannel.setLoopMode(LoopMode.DontLoop);
+//        if (achannel == null) {
+//            return;
+//        }
+//        achannel.setAnim("Idle");
+//        achannel.setLoopMode(LoopMode.DontLoop);
+        if (animComposerYss!=null) animComposerYss.reset();
         if (btype == BTYPE.PRESS) {
             nodeBtn.setLocalRotation(Quaternion.IDENTITY);
             nodeBtn.setLocalTranslation(myPlace);
@@ -661,38 +672,110 @@ public class Button3d {
     }
 
     public void flyIn() {
-        if (acontrol.getAnim("flyIn") == null) {
-            AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime * 1.5f, "flyIn", 24);
-            af.addTimeTransform(0, nodeBtn.getLocalTransform());
-            af.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(myPlace, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
-            Animation an = af.buildAnimation();
-            acontrol.addAnim(an);
+        if (animComposerYss==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for flyOut");
         }
+
+        if (animComposerYss.getAction("flyIn")==null) {
+
+            Vector3f currM = ToolsBase.vPool.getV3(SettBase.b3dX, section % 2 > 0 ? -SettBase.b3dY : SettBase.b3dY, SettBase.b3dZ);
+            AnimClip clip = animComposerYss.getAnimClip("flyIn");
+            if (clip != null) animComposerYss.removeAnimClip(clip);
+            AnimFactory animFactory = new AnimFactory(SettBase.amimBtnTime, "flyIn", 25f);
+            animFactory.addTimeTransform(0, nodeBtn.getLocalTransform());
+            animFactory.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(myPlace, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
+            clip=animFactory.buildAnimation(nodeBtn);
+            animComposerYss.addAnimClip(clip);
+            ToolsBase.vPool.freeV3(currM);
+        }
+
+//        if (acontrol.getAnim("flyIn") == null) {
+//            AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime * 1.5f, "flyIn", 24);
+//            af.addTimeTransform(0, nodeBtn.getLocalTransform());
+//            af.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(myPlace, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
+//            Animation an = af.buildAnimation();
+//            acontrol.addAnim(an);
+//        }
+//        resetAnim();
+//        achannel.setAnim("flyIn");
+//        achannel.setLoopMode(LoopMode.DontLoop);
         resetAnim();
-        achannel.setAnim("flyIn");
-        achannel.setLoopMode(LoopMode.DontLoop);
+        animComposerYss.setCurrentAction("flyIn");
     }
 
     public void flyOut() {
-        if (acontrol.getAnim("flyOut") == null) {
+
+        if (animComposerYss==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for flyOut");
+        }
+
+        if (animComposerYss.getAction("flyOut")==null) {
+            //animComposerYss.removeAction("flyOut");
             Vector3f currM = ToolsBase.vPool.getV3(SettBase.b3dX, section % 2 > 0 ? -SettBase.b3dY : SettBase.b3dY, SettBase.b3dZ);
-            AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime * 1.5f, "flyOut", 24);
-            af.addTimeTransform(0, nodeBtn.getLocalTransform());
-            af.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(currM, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
-            Animation an = af.buildAnimation();
-            acontrol.addAnim(an);
+            AnimClip clip = animComposerYss.getAnimClip("flyOut");
+            if (clip != null) animComposerYss.removeAnimClip(clip);
+            AnimFactory animFactory = new AnimFactory(SettBase.amimBtnTime, "flyOut", 25f);
+            animFactory.addTimeTransform(0, nodeBtn.getLocalTransform());
+            animFactory.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(currM, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
+            clip=animFactory.buildAnimation(nodeBtn);
+            animComposerYss.addAnimClip(clip);
             ToolsBase.vPool.freeV3(currM);
         }
+//        if (acontrol.getAnim("flyOut") == null) {
+//            Vector3f currM = ToolsBase.vPool.getV3(SettBase.b3dX, section % 2 > 0 ? -SettBase.b3dY : SettBase.b3dY, SettBase.b3dZ);
+//            AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime * 1.5f, "flyOut", 24);
+//            af.addTimeTransform(0, nodeBtn.getLocalTransform());
+//            af.addTimeTransform(SettBase.amimBtnTime * 1.5f, new Transform(currM, nodeBtn.getLocalRotation(), nodeBtn.getLocalScale()));
+//            Animation an = af.buildAnimation();
+//            acontrol.addAnim(an);
+//            ToolsBase.vPool.freeV3(currM);
+//        }
         resetAnim();
-        achannel.setAnim("flyOut");
-        achannel.setLoopMode(LoopMode.DontLoop);
+        animComposerYss.setCurrentAction("flyOut");
+//        achannel.setAnim("flyOut");
+//        achannel.setLoopMode(LoopMode.DontLoop);
     }
 
     private void makeRotateAnim(String aname, boolean XorY, int part, int deg) {
         Vector3f currM = ToolsBase.vPool.getV3(myPlace);
         Vector3f currS = ToolsBase.vPool.getV3(nodeBtn.getLocalScale());
 
-        AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime, aname, 30);
+//        AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime, aname, 30);
+//        Vector3f RV = ToolsBase.vPool.getV3();
+//        if (XorY) {
+//            RV.set(1, 0, 0);
+//        } else {
+//            RV.set(0, 1, 0);
+//        }
+//        Quaternion currR = ToolsBase.vPool.getQt().fromAngleNormalAxis(deg * part * FastMath.DEG_TO_RAD, RV);
+//        //from
+//        af.addTimeTransform(0, new Transform(currM, currR, currS));
+//
+//
+//        //middle
+//        Vector3f tmpM = ToolsBase.vPool.getV3(nodeBtn.getLocalTranslation());
+//        currR.fromAngleNormalAxis(((deg * part) + deg / 2) * FastMath.DEG_TO_RAD, RV);
+//        af.addTimeTransform(SettBase.amimBtnTime / 2, new Transform(tmpM, currR, currS));
+//
+//        //to
+//        currR.fromAngleNormalAxis(deg * (part + 1) * FastMath.DEG_TO_RAD, RV);
+//        af.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
+//
+//        Animation an = af.buildAnimation();
+//        acontrol.addAnim(an);
+
+        if (animComposerYss==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for " + aname);
+        }
+
+        if (animComposerYss.getAction(aname)!=null) animComposerYss.removeAction(aname);
+        AnimClip clip=animComposerYss.getAnimClip(aname);
+        if (clip!=null) animComposerYss.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(SettBase.amimBtnTime, aname, 25f);
         Vector3f RV = ToolsBase.vPool.getV3();
         if (XorY) {
             RV.set(1, 0, 0);
@@ -701,26 +784,24 @@ public class Button3d {
         }
         Quaternion currR = ToolsBase.vPool.getQt().fromAngleNormalAxis(deg * part * FastMath.DEG_TO_RAD, RV);
         //from
-        af.addTimeTransform(0, new Transform(currM, currR, currS));
-
-
+        animFactory.addTimeTransform(0, new Transform(currM, currR, currS));
         //middle
         Vector3f tmpM = ToolsBase.vPool.getV3(nodeBtn.getLocalTranslation());
         currR.fromAngleNormalAxis(((deg * part) + deg / 2) * FastMath.DEG_TO_RAD, RV);
-        af.addTimeTransform(SettBase.amimBtnTime / 2, new Transform(tmpM, currR, currS));
-
+        animFactory.addTimeTransform(SettBase.amimBtnTime / 2, new Transform(tmpM, currR, currS));
         //to
         currR.fromAngleNormalAxis(deg * (part + 1) * FastMath.DEG_TO_RAD, RV);
-        af.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
+        animFactory.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
 
-        Animation an = af.buildAnimation();
+        clip=animFactory.buildAnimation(nodeBtn);
+        animComposerYss.addAnimClip(clip);
 
         ToolsBase.vPool.freeV3(RV);
         ToolsBase.vPool.freeV3(currM);
         ToolsBase.vPool.freeV3(currS);
         ToolsBase.vPool.freeQt(currR);
 
-        acontrol.addAnim(an);
+
     }
 
     private void makePressAnim(boolean down, String aname) {
@@ -728,26 +809,53 @@ public class Button3d {
         Vector3f currS = ToolsBase.vPool.getV3(nodeBtn.getLocalScale());
         Quaternion currR = ToolsBase.vPool.getQt(nodeBtn.getLocalRotation());
 
-        AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime, aname, 12);
+//        AnimationFactory af = new AnimationFactory(SettBase.amimBtnTime, aname, 12);
+//
+//        //from
+//        af.addTimeTransform(0, nodeBtn.getLocalTransform());
+//
+//        if (down) {
+//            currM.set(myPlace.x, myPlace.y, myPlace.z - SettBase.DELTA_PRESS);
+//        } else {
+//            currM.set(myPlace);
+//        }
+//        af.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
+//
+//        Animation an = af.buildAnimation();
+//
+//      acontrol.addAnim(an);
 
-        //from
-        af.addTimeTransform(0, nodeBtn.getLocalTransform());
 
+        //AnimComposer animComposer=CA.getGe().getControl(AnimComposer.class);
+        if (animComposerYss==null){
+            //throw ("Anim composer is NULL!!!");
+            throw new NullPointerException("Cannot find Anim composer for " + aname);
+        }
+
+        if (animComposerYss.getAction(aname)!=null) animComposerYss.removeAction(aname);
+        AnimClip clip=animComposerYss.getAnimClip(aname);
+        if (clip!=null) animComposerYss.removeAnimClip(clip);
+
+        AnimFactory animFactory = new AnimFactory(SettBase.amimBtnTime, aname, 25f);
+        animFactory.addTimeTransform(0,nodeBtn.getLocalTransform());
         if (down) {
             currM.set(myPlace.x, myPlace.y, myPlace.z - SettBase.DELTA_PRESS);
         } else {
             currM.set(myPlace);
         }
-        af.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
+        animFactory.addTimeTransform(SettBase.amimBtnTime, new Transform(currM, currR, currS));
+        clip = animFactory.buildAnimation(nodeBtn);
 
-        Animation an = af.buildAnimation();
-
+        animComposerYss.addAnimClip(clip);
+        //animComposerYss.setCurrentAction(name);
 
         ToolsBase.vPool.freeV3(currM);
         ToolsBase.vPool.freeV3(currS);
         ToolsBase.vPool.freeQt(currR);
+//
 
-        acontrol.addAnim(an);
+
+
     }
     
     public boolean isEnabled() {

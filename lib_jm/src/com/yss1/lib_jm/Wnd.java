@@ -4,6 +4,8 @@
  */
 package com.yss1.lib_jm;
 
+import com.jme3.anim.AnimComposer;
+import com.jme3.anim.tween.action.Action;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class Wnd implements 
         ButtonListener, 
-        AnimEventListener,
+        AnimClipListener,
         IExecutor{
 
     
@@ -477,16 +479,15 @@ public class Wnd implements
     }
     
   @Override
-  public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
-        channel.setAnim("Idle");
-        channel.setLoopMode(LoopMode.DontLoop);
+  public void onAnimCycleDone(Action action, AnimComposer animComposer, String animName) {
+        //channel.setAnim("Idle");
+        animComposer.reset();
+        //channel.setLoopMode(LoopMode.DontLoop);
         ToolsBase.waiters.checkActions(this);
    }
    
    
-@Override
-  public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
-    }   
+
   
    private Vector3f vdiff;
     
@@ -511,7 +512,7 @@ public class Wnd implements
     
     
     @Override
-    public AnimEventListener getAEL() {
+    public AnimClipListener getAnimClipListener(){
         return this;
     }
     
