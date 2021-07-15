@@ -122,21 +122,21 @@ public abstract class AppBase extends SimpleApplication
 
     public void signOut(boolean sog) {
         if (androidIF != null) {
-            androidIF.signOut(sog);
+            androidIF.mp_signOut(sog);
         }
     }
 
 
     public void signIn() {
         if (androidIF != null) {
-            androidIF.signIn();
+            androidIF.mp_signIn();
         }
     }
 
 
     public boolean isSignedIn() {
         if (androidIF != null) {
-            return androidIF.isSignedIn();
+            return androidIF.mp_isSignedIn();
         }
         return false;
     }
@@ -176,12 +176,22 @@ public abstract class AppBase extends SimpleApplication
     //    return (androidIF != null && androidIF.gp_isSignedIn());
     //}
 
-    public void connect() {
-        if (androidIF != null && !androidIF.gp_isSignedIn()) androidIF.gp_Connect();
+//    public void connect() {
+//        if (androidIF != null && !androidIF.gp_isSignedIn()) androidIF.gp_Connect();
+//    }
+//
+//    public void disconnect() {
+//        if (androidIF != null) androidIF.gp_Disconnect();
+//    }
+
+
+    @Override
+    public void recvData(String field, String value) {
+
     }
 
-    public void disconnect() {
-        if (androidIF != null) androidIF.gp_Disconnect();
+    public String read_db(String field){
+        if ()
     }
 
     @Override
@@ -254,13 +264,13 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF != null) androidIF.gp_ShowLeaderboard(Lid);
     }
 
-    public void unlockAchivment(String Lid) {
-        if (androidIF != null) androidIF.gp_UnlockAchivement(Lid);
-    }
-
-    public void incrementAchivment(String Lid, int sc) {
-        if (androidIF != null) androidIF.gp_IncrementAchivement(Lid, sc);
-    }
+//    public void unlockAchivment(String Lid) {
+//        if (androidIF != null) androidIF.gp_UnlockAchivement(Lid);
+//    }
+//
+//    public void incrementAchivment(String Lid, int sc) {
+//        if (androidIF != null) androidIF.gp_IncrementAchivement(Lid, sc);
+//    }
 
     public void submitScore(String Lid, int sc) {
         if (androidIF != null) androidIF.gp_SubmitScore(Lid, sc);
@@ -429,6 +439,12 @@ public abstract class AppBase extends SimpleApplication
     public void afterClearOnWrongVersion() {
         HBOARD.localSave();
     }
+
+    //region multiplayer options
+
+
+    //endregion multiplayer options
+
 
     public void selectOpponents(boolean am) {
         if (androidIF != null) {

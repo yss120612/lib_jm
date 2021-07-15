@@ -14,6 +14,8 @@ public interface AppIF {
 
     public void setAndroidIF(AndroidIF aif);
 
+    public void recvData(String field, String value);
+
     public void onConnected();
 
     public void stringFromDialog(int dt, String s);
@@ -26,8 +28,6 @@ public interface AppIF {
 
     public void prepareClearOnWrongVersion();
 
-    //public void startClient();
-
     public void startNetworkGame();
 
     public void initUsers(ArrayList<UserBase> uBL, String serverID);
@@ -39,8 +39,5 @@ public interface AppIF {
     public void successSend(String pID);
     
     public void appStop();
-    
-//    public void appPaused();
-//    
-//    public void appResumed();
+
 }
