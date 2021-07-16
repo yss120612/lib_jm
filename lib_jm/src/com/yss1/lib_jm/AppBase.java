@@ -185,13 +185,23 @@ public abstract class AppBase extends SimpleApplication
 //    }
 
 
+
+
     @Override
     public void recvData(String field, String value) {
-
+        if (androidIF!=null) androidIF.mp_writeDB(field,value);
     }
 
-    public String read_db(String field){
-        if ()
+    public void subscribe_db(String field){
+        if (androidIF!=null) androidIF.mp_connectDataReceiverFor(field);
+    }
+
+    public void read_db(String field){
+        if (androidIF!=null) androidIF.mp_readDB(field);
+    }
+
+    public void writeDB(String field, String value) {
+        if (androidIF!=null) androidIF.mp_writeDB(field,value);
     }
 
     @Override
@@ -209,17 +219,17 @@ public abstract class AppBase extends SimpleApplication
         if (getUIM() != null) {
             getUIM().setGPmaterial(true);
         }
-
-        if (!runOnConnect.isEmpty()) {
-            if (runOnConnect.contains("Achivements")) {
-                showAcivements();
-            } else if (runOnConnect.contains("Multiplayer")) {
-                androidIF.mp_InvitationInbox();
-            } else {
-                showLeaderboard(runOnConnect);
-            }
-            runOnConnect = "";
-        }
+//
+//        if (!runOnConnect.isEmpty()) {
+//            if (runOnConnect.contains("Achivements")) {
+//                showAcivements();
+//            } else if (runOnConnect.contains("Multiplayer")) {
+//                androidIF.mp_InvitationInbox();
+//            } else {
+//                showLeaderboard(runOnConnect);
+//            }
+//            runOnConnect = "";
+//        }
 
     }
 
@@ -230,39 +240,39 @@ public abstract class AppBase extends SimpleApplication
         boolean conn = isSignedIn();
         if (X < -0.1f) {
             if (conn) {
-
-                disconnect();
-                getUIM().setGPmaterial(false);
-            } else {
-                runOnConnect = "";
-                connect();
+//
+//                disconnect();
+//                getUIM().setGPmaterial(false);
+//            } else {
+//                runOnConnect = "";
+//                connect();
             }
             return;
         }
         if (X < 0.33f) {
             if (!conn) {
-                runOnConnect = "Achivements";
-                connect();
-            } else {
-                showAcivements();
+//                runOnConnect = "Achivements";
+//                connect();
+//            } else {
+//                showAcivements();
             }
         } else {
             if (!conn) {
-                runOnConnect = LB;
-                connect();
-            } else {
-                showLeaderboard(LB);
+//                runOnConnect = LB;
+//                connect();
+//            } else {
+//                showLeaderboard(LB);
             }
         }
     }
 
-    public void showAcivements() {
-        if (androidIF != null) androidIF.gp_ShowAchivements();
-    }
+   // public void showAcivements() {
+    //    if (androidIF != null) androidIF.gp_ShowAchivements();
+   // }
 
-    public void showLeaderboard(String Lid) {
-        if (androidIF != null) androidIF.gp_ShowLeaderboard(Lid);
-    }
+//    public void showLeaderboard(String Lid) {
+//        if (androidIF != null) androidIF.gp_ShowLeaderboard(Lid);
+//    }
 
 //    public void unlockAchivment(String Lid) {
 //        if (androidIF != null) androidIF.gp_UnlockAchivement(Lid);
@@ -273,7 +283,7 @@ public abstract class AppBase extends SimpleApplication
 //    }
 
     public void submitScore(String Lid, int sc) {
-        if (androidIF != null) androidIF.gp_SubmitScore(Lid, sc);
+        //if (androidIF != null) androidIF.gp_SubmitScore(Lid, sc);
     }
 
     public String getDefaultLanguage() {
@@ -446,23 +456,23 @@ public abstract class AppBase extends SimpleApplication
     //endregion multiplayer options
 
 
-    public void selectOpponents(boolean am) {
-        if (androidIF != null) {
-            androidIF.mp_SelectOpponents(am);
-        }
-    }
+//    public void selectOpponents(boolean am) {
+//        if (androidIF != null) {
+//            androidIF.mp_SelectOpponents(am);
+//        }
+//    }
 
-    public void quickStart() {
-        if (androidIF != null) {
-            androidIF.mp_QuickStartGame();
-        }
-    }
+//    public void quickStart() {
+//        if (androidIF != null) {
+//            androidIF.mp_QuickStartGame();
+//        }
+//    }
 
-    public void invitationInbox() {
-        if (androidIF != null) {
-            androidIF.mp_InvitationInbox();
-        }
-    }
+//    public void invitationInbox() {
+//        if (androidIF != null) {
+//            androidIF.mp_InvitationInbox();
+//        }
+//    }
 
     @Override
     public void startNetworkGame() {
@@ -499,12 +509,12 @@ public abstract class AppBase extends SimpleApplication
         ToolsBase.waiters.initWaiter(this, AD_CLOSED, "AD closed", 0.5f);
     }
 
-    public int maxMessageLength() {
-        if (androidIF != null) {
-            return androidIF.mp_MaxMessageLength();
-        }
-        return 0;
-    }
+//    public int maxMessageLength() {
+//        if (androidIF != null) {
+//            return androidIF.mp_MaxMessageLength();
+//        }
+//        return 0;
+//    }
 
     @Override
     public void send2All(NetPacket np) {
@@ -512,26 +522,26 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF == null) {
             return;
         }
-        int res;
-        //showAndroidMessage(np.getPacketType()+"",np.getContent());
-
-        for (UserBase ub : USERS.getuList()) {
-            if (!ub.isI()) {
-                res = androidIF.mp_SendTo(ub.getUid(), np.getData());
-                if (res > 0) {
-                    np.addContragent(ub.getUid());
-                }
-            }
-        }
+//        int res;
+//        //showAndroidMessage(np.getPacketType()+"",np.getContent());
+//
+//        for (UserBase ub : USERS.getuList()) {
+//            if (!ub.isI()) {
+//                res = androidIF.mp_SendTo(ub.getUid(), np.getData());
+//                if (res > 0) {
+//                    np.addContragent(ub.getUid());
+//                }
+//            }
+//        }
     }
 
     @Override
     public void send2One(String id, NetPacket np) {
         if (androidIF != null) {
-            if (androidIF.mp_SendTo(id, np.getData()) > 0) {
-                // np.addContragent(id);
-                //contragent уже есть
-            }
+//            if (androidIF.mp_SendTo(id, np.getData()) > 0) {
+//                // np.addContragent(id);
+//                //contragent уже есть
+//            }
         }
     }
 
@@ -544,7 +554,7 @@ public abstract class AppBase extends SimpleApplication
     public void gameLeaved() {
         if (androidIF != null) {
             //writeAndroidLog("Leave");
-            androidIF.mp_endNetworkGame();
+            //androidIF.mp_endNetworkGame();
         }
     }
 
