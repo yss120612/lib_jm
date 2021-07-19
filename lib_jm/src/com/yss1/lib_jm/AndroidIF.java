@@ -36,6 +36,7 @@ public interface AndroidIF  {
   public void showBanner(boolean sb);
   public boolean isBannerVisible();
 
+  //public void setIds();
   public String  getLanguage();
   public void setScreenOFF(boolean off);
   public void writeLog(String theme);

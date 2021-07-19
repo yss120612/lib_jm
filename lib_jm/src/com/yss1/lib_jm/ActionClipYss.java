@@ -45,7 +45,10 @@ public class ActionClipYss extends ClipAction {
     @Override
     public boolean interpolate(double t) {
         boolean result=super.interpolate(t);
-        if (!result) animClipListener.onAnimCycleDone(this,animComposer, this.toString());
+        if (!result) {
+            if (!loop) animComposer.reset();
+            animClipListener.onAnimCycleDone(this, animComposer, this.toString());
+        }
         return result;
     }
 
