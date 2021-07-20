@@ -189,7 +189,7 @@ public abstract class AppBase extends SimpleApplication
 
     @Override
     public void recvData(String field, String value) {
-        if (androidIF!=null) androidIF.mp_writeDB(field,value);
+        showAndroidInfo("field="+field+" value="+value);
     }
 
     public void subscribe_db(String field){
