@@ -189,7 +189,8 @@ public abstract class AppBase extends SimpleApplication
 
     @Override
     public void recvData(String field, String value) {
-        showAndroidInfo("field="+field+" value="+value);
+        //showAndroidInfo("field="+field+" value="+value);
+        dataReceived(value);
     }
 
     public void subscribe_db(String field){
@@ -200,7 +201,7 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF!=null) androidIF.mp_readDB(field);
     }
 
-    public void writeDB(String field, String value) {
+    public void write_db(String field, String value) {
         if (androidIF!=null) androidIF.mp_writeDB(field,value);
     }
 
@@ -480,10 +481,12 @@ public abstract class AppBase extends SimpleApplication
     }
 
 
+
+
     @Override
-    public void dataReceived(String pID, byte[] dt) {
+    public void dataReceived(String pID) {
         if (QNET != null) {
-            QNET.receivePacket(pID, dt);
+            QNET.receivePacket(pID);
             ToolsBase.waiters.initWaiter(this, DATA_RECEIVED, pID, 0.5f);
         }
     }
@@ -517,11 +520,13 @@ public abstract class AppBase extends SimpleApplication
 //    }
 
     @Override
-    public void send2All(NetPacket np) {
-        //только используется qnet
+    public void sendPacket(NetPacket np)
+    {
+
         if (androidIF == null) {
             return;
         }
+        androidIF.mp_writeDB("kab001", np.prepare2sendPacket());
 //        int res;
 //        //showAndroidMessage(np.getPacketType()+"",np.getContent());
 //
@@ -535,15 +540,15 @@ public abstract class AppBase extends SimpleApplication
 //        }
     }
 
-    @Override
-    public void send2One(String id, NetPacket np) {
-        if (androidIF != null) {
-//            if (androidIF.mp_SendTo(id, np.getData()) > 0) {
-//                // np.addContragent(id);
-//                //contragent уже есть
-//            }
-        }
-    }
+//    @Override
+//    public void send2One(String id, NetPacket np) {
+//        if (androidIF != null) {
+////            if (androidIF.mp_SendTo(id, np.getData()) > 0) {
+////                // np.addContragent(id);
+////                //contragent уже есть
+////            }
+//        }
+//    }
 
     @Override
     public void sendAllAttemptsError(String id) {

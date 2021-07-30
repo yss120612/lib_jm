@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -197,7 +198,7 @@ public class NetPacket {
      * @return
      */
     public String prepare2sendPacket() {
-        return "{CT=" + contentType.getLetter() + " ,RCPT=" + _send_to.getLetter() + " ,SENDER=" + _sender.getLetter() + " ,DATA=" + data.toString() + "}";
+        return "{CT=" + contentType.getLetter() + ",RCPT=" + _send_to.getLetter() + ",SENDER=" + _sender.getLetter() + ",DATA=" + data.toString() + "}";
     }
 
     /**
@@ -206,17 +207,23 @@ public class NetPacket {
      * @return
      */
     public void makePacket(String s) {
-        List<String> al = Stream.of(s.replaceAll("[\\{,\\}]", "").split("\\,=")).collect(Collectors.toList());
-        al.forEach(String::trim);
-        for (int i = 0; i < al.size(); i += 2) {
-            if (al.get(i).equals("CT") && i + 1 < al.size())
-                contentType = PType.getPT(al.get(i + 1).charAt(0));
-            else if (al.get(i).equals("RCPT") && i + 1 < al.size())
-                _send_to = AddressType.getAddressType(al.get(i + 1).charAt(0));
-            else if (al.get(i).equals("SENDER") && i + 1 < al.size())
-                _sender = AddressType.getAddressType(al.get(i + 1).charAt(0));
-            else if (al.get(i).equals("DATA") && i + 1 < al.size()) setContent(al.get(i + 1));
-        }
+        //List<String> al = Stream.of(s.replaceAll("[\\{,\\}]", "").split("[\\,=]")).map(String::trim).collect(Collectors.toList());
+        Map<String,String> pmap=Stream.of(s.replaceAll("[\\{,\\}]", "").split("\\,")).
+                map(String::trim).
+                collect(Collectors.toMap(x->x.substring(0, x.indexOf("=")).trim(),x->x.substring(x.indexOf("=")+1)));
+        if (pmap.containsKey("CT")) contentType=PType.getPT(pmap.get("CT").charAt(0));
+        if (pmap.containsKey("RCPT")) _send_to=AddressType.getAddressType(pmap.get("RCPT").charAt(0));
+        if (pmap.containsKey("SENDER")) _sender=AddressType.getAddressType(pmap.get("SENDER").charAt(0));
+        if (pmap.containsKey("DATA")) setContent(pmap.get("DATA"));
+//        for (int i = 0; i < al.size(); i += 2) {
+//            if (al.get(i).equals("CT") && i + 1 < al.size())
+//                contentType = PType.getPT(al.get(i + 1).charAt(0));
+//            else if (al.get(i).equals("RCPT") && i + 1 < al.size())
+//                _send_to = AddressType.getAddressType(al.get(i + 1).charAt(0));
+//            else if (al.get(i).equals("SENDER") && i + 1 < al.size())
+//                _sender = AddressType.getAddressType(al.get(i + 1).charAt(0));
+//            else if (al.get(i).equals("DATA") && i + 1 < al.size()) setContent(al.get(i + 1));
+//        }
 
     }
 }

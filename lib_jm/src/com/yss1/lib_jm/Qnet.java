@@ -49,9 +49,9 @@ public class Qnet {
         try
         {
         NetPacket NP = getPacket();
-        NP.setMulticast(true);
-        NP.setPacketType(pt);
-        NP.setData(D);
+        NP.set_send_to(NetPacket.AddressType.ALLNOTME);
+        NP.setContentType(pt);
+        NP.setContent(D);
         processSendPacket(NP);
         }
         catch (Exception Ex)
@@ -64,9 +64,9 @@ public class Qnet {
         try
         {
         NetPacket NP = getPacket();
-        NP.setMulticast(true);
-        NP.setPacketType(pt);
-        NP.setData(D);
+        NP.set_send_to(NetPacket.AddressType.ALLNOTME);
+        NP.setContentType(pt);
+        NP.setContent(D);
         processSendPacket(NP);
         }
         catch (Exception Ex)
@@ -74,24 +74,24 @@ public class Qnet {
         ap.writeAndroidLog("In packetSend2 "+Ex.getMessage());
     }
     }
-
-    public void packetOneSend(PType pt, String D, String rcp) {
-        try
-        {
-        NetPacket NP = getPacket();
-        NP.setMulticast(false);
-        NP.clearContragents();
-        NP.addContragent(rcp);
-        NP.setPacketType(pt);
-        NP.setData(D);
-        processSendPacket(NP);
-        }
-    catch (Exception Ex)
-    {
-        ap.writeAndroidLog("In packetOneSend "+Ex.getMessage());
-    }
-    }
-    
+//
+//    public void packetOneSend(PType pt, String D, String rcp) {
+//        try
+//        {
+//        NetPacket NP = getPacket();
+//        NP.setMulticast(false);
+//        NP.clearContragents();
+//        NP.addContragent(rcp);
+//        NP.setPacketType(pt);
+//        NP.setData(D);
+//        processSendPacket(NP);
+//        }
+//    catch (Exception Ex)
+//    {
+//        ap.writeAndroidLog("In packetOneSend "+Ex.getMessage());
+//    }
+//    }
+//
     
     private void processSendPacket(NetPacket NP) {
         forSnd.offer(NP);
@@ -112,12 +112,13 @@ public class Qnet {
             succSend = false;
             resendCounter = 0;
 
-            if (NP.isMulticast()) {
-                NP.clearContragents();
-                ap.send2All(NP);
-            } else {
-                ap.send2One(NP.getContragent(), NP);
-            }
+//            if (NP.isMulticast()) {
+//                NP.clearContragents();
+//                ap.send2All(NP);
+//            } else {
+//                ap.send2One(NP.getContragent(), NP);
+//            }
+            ap.sendPacket(NP);
         } catch (Exception Ex) {
             ap.writeAndroidLog("In send " + Ex.getMessage());
         }
@@ -134,7 +135,7 @@ public class Qnet {
             NetPacket NP=forSnd.peek();
 
             if (NP != null) {
-                ap.send2One(id, NP);
+                //ap.send2One(id, NP);
             }
         } catch (Exception Ex) {
             ap.writeAndroidLog("In reSend " + Ex.getMessage());
@@ -151,13 +152,13 @@ public class Qnet {
                 if (NP == null) {
                     return;
                 }
-                NP.removeContragent(pID);
-                if (NP.haveContragents()) {
-                    return;
-                }
+//                NP.removeContragent(pID);
+//                if (NP.haveContragents()) {
+//                    return;
+//                }
                 forSnd.remove(NP);
             }
-            PType pt=NP.getPacketType();
+            PType pt=NP.getContentType();
             freePacket(NP);
             succSend = true;
             if (pt == PType.IM_LEAVE) {//I leave game and succ send to other
@@ -172,11 +173,12 @@ public class Qnet {
     }
 
     //вызывается когда приходит пакет
-    public void receivePacket(String pID, byte[] dt) {
+    public void receivePacket(String pID) {
         NetPacket NP = getPacket();
-        NP.setData(dt);
-        NP.clearContragents();
-        NP.addContragent(pID);
+        NP.makePacket(pID);
+        //NP.setData(dt);
+        //NP.clearContragents();
+        //NP.addContragent(pID);
         forRcv.offer(NP);
     }
 

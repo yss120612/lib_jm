@@ -32,7 +32,7 @@ public interface AppIF {
 
     public void initUsers(ArrayList<UserBase> uBL, String serverID);
 
-    public void dataReceived(String pID, byte[] dt);
+    //public void dataReceived(String pID, byte[] dt);
 
     public void errorSend(String pID);
 
