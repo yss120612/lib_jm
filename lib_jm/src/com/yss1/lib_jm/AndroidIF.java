@@ -49,7 +49,7 @@ public interface AndroidIF  {
   public void mp_signIn();
   public void mp_signOut(boolean signout_google);
   public boolean mp_isSignedIn();
-  public void mp_writeDB(String field, String value);
+  public void mp_writeDB(String field, Map<String,Object> value);
   public void mp_readDB(String field);
   public void mp_connectDataReceiverFor(String field);
 

@@ -5,6 +5,8 @@
 package com.yss1.lib_jm;
 
 import com.yss1.lib_jm.NetPacket.PType;
+
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -173,7 +175,7 @@ public class Qnet {
     }
 
     //вызывается когда приходит пакет
-    public void receivePacket(String pID) {
+    public void receivePacket(Map<String,Object> pID) {
         NetPacket NP = getPacket();
         NP.makePacket(pID);
         //NP.setData(dt);

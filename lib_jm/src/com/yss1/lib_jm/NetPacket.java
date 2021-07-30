@@ -6,6 +6,7 @@ package com.yss1.lib_jm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -196,9 +197,14 @@ public class NetPacket {
      * pack NetPacket data in RAW [] bytes for send
      *
      * @return
+     *
      */
-    public String prepare2sendPacket() {
-        return "{CT=" + contentType.getLetter() + ",RCPT=" + _send_to.getLetter() + ",SENDER=" + _sender.getLetter() + ",DATA=" + data.toString() + "}";
+    public Map<String,Object> prepare2sendPacket() {
+
+        return Map.ofEntries(Map.entry("CT",contentType.getLetter()),
+                                Map.entry("RCPT",_send_to.getLetter()),
+                                Map.entry("SENDER",_sender.getLetter()),
+                                Map.entry("DATA",data.toString()));
     }
 
     /**
@@ -206,15 +212,15 @@ public class NetPacket {
      *
      * @return
      */
-    public void makePacket(String s) {
+    public void makePacket(Map<String,Object> pmap) {
         //List<String> al = Stream.of(s.replaceAll("[\\{,\\}]", "").split("[\\,=]")).map(String::trim).collect(Collectors.toList());
-        Map<String,String> pmap=Stream.of(s.replaceAll("[\\{,\\}]", "").split("\\,")).
-                map(String::trim).
-                collect(Collectors.toMap(x->x.substring(0, x.indexOf("=")).trim(),x->x.substring(x.indexOf("=")+1)));
-        if (pmap.containsKey("CT")) contentType=PType.getPT(pmap.get("CT").charAt(0));
-        if (pmap.containsKey("RCPT")) _send_to=AddressType.getAddressType(pmap.get("RCPT").charAt(0));
-        if (pmap.containsKey("SENDER")) _sender=AddressType.getAddressType(pmap.get("SENDER").charAt(0));
-        if (pmap.containsKey("DATA")) setContent(pmap.get("DATA"));
+//        Map<String,String> pmap=Stream.of(s.replaceAll("[\\{,\\}]", "").split("\\,")).
+//                map(String::trim).
+//                collect(Collectors.toMap(x->x.substring(0, x.indexOf("=")).trim(),x->x.substring(x.indexOf("=")+1)));
+        if (pmap.containsKey("CT")) contentType=PType.getPT(((String)pmap.get("CT")).charAt(0));
+        if (pmap.containsKey("RCPT")) _send_to=AddressType.getAddressType(((String)pmap.get("RCPT")).charAt(0));
+        if (pmap.containsKey("SENDER")) _sender=AddressType.getAddressType(((String)pmap.get("SENDER")).charAt(0));
+        if (pmap.containsKey("DATA")) setContent((String)pmap.get("DATA"));
 //        for (int i = 0; i < al.size(); i += 2) {
 //            if (al.get(i).equals("CT") && i + 1 < al.size())
 //                contentType = PType.getPT(al.get(i + 1).charAt(0));

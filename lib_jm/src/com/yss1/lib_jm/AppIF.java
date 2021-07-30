@@ -5,6 +5,7 @@
 package com.yss1.lib_jm;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -14,7 +15,7 @@ public interface AppIF {
 
     public void setAndroidIF(AndroidIF aif);
 
-    public void recvData(String field, String value);
+    public void recvData(String field, Map<String,Object> value);
 
     public void onConnected();
 

@@ -188,7 +188,7 @@ public abstract class AppBase extends SimpleApplication
 
 
     @Override
-    public void recvData(String field, String value) {
+    public void recvData(String field, Map<String,Object> value) {
         //showAndroidInfo("field="+field+" value="+value);
         dataReceived(value);
     }
@@ -201,7 +201,7 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF!=null) androidIF.mp_readDB(field);
     }
 
-    public void write_db(String field, String value) {
+    public void write_db(String field, Map<String,Object> value) {
         if (androidIF!=null) androidIF.mp_writeDB(field,value);
     }
 
@@ -484,10 +484,10 @@ public abstract class AppBase extends SimpleApplication
 
 
     @Override
-    public void dataReceived(String pID) {
+    public void dataReceived(Map<String,Object> pID) {
         if (QNET != null) {
             QNET.receivePacket(pID);
-            ToolsBase.waiters.initWaiter(this, DATA_RECEIVED, pID, 0.5f);
+            ToolsBase.waiters.initWaiter(this, DATA_RECEIVED, "RECV", 0.5f);
         }
     }
 
