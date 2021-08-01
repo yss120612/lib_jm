@@ -485,6 +485,7 @@ public abstract class AppBase extends SimpleApplication
 
     @Override
     public void dataReceived(Map<String,Object> pID) {
+        showAndroidMessage("packet",pID.toString());
         if (QNET != null) {
             QNET.receivePacket(pID);
             ToolsBase.waiters.initWaiter(this, DATA_RECEIVED, "RECV", 0.5f);

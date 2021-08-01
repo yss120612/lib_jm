@@ -201,9 +201,9 @@ public class NetPacket {
      */
     public Map<String,Object> prepare2sendPacket() {
 
-        return Map.ofEntries(Map.entry("CT",contentType.getLetter()),
-                                Map.entry("RCPT",_send_to.getLetter()),
-                                Map.entry("SENDER",_sender.getLetter()),
+        return Map.ofEntries(Map.entry("CT",contentType.getLetter()+""),
+                                Map.entry("RCPT",_send_to.getLetter()+""),
+                                Map.entry("SENDER",_sender.getLetter()+""),
                                 Map.entry("DATA",data.toString()));
     }
 
