@@ -51,7 +51,7 @@ public class Qnet {
         try
         {
         NetPacket NP = getPacket();
-        NP.set_send_to(NetPacket.AddressType.ALLNOTME);
+        NP.set_receiver(NetPacket.AddressType.ALLNOTME);
         NP.setContentType(pt);
         NP.setContent(D);
         processSendPacket(NP);
@@ -66,7 +66,7 @@ public class Qnet {
         try
         {
         NetPacket NP = getPacket();
-        NP.set_send_to(NetPacket.AddressType.ALLNOTME);
+        NP.set_receiver(NetPacket.AddressType.ALLNOTME);
         NP.setContentType(pt);
         NP.setContent(D);
         processSendPacket(NP);

@@ -133,22 +133,22 @@ public class NetPacket {
 
     private PType contentType;
     private AddressType _sender;
-    private AddressType _send_to;
+    private AddressType _receiver;
     private StringBuilder data;
 
     public AddressType get_sender() {
         return _sender;
     }
 
-    public AddressType get_send_to() {
-        return _send_to;
+    public AddressType get_receiver() {
+        return _receiver;
     }
 
 
     public NetPacket() {
         data = new StringBuilder();
         contentType = PType.EMPTY;
-        _send_to = AddressType.NOBODY;
+        _receiver = AddressType.NOBODY;
         _sender = AddressType.NOBODY;
     }
 
@@ -160,12 +160,12 @@ public class NetPacket {
     //    _send_to==RecvType.ALLNOTME
     //}
 
-    public void set_sender(AddressType _sender) {
-        this._sender = _sender;
+    public void set_sender(AddressType sender) {
+        this._sender = sender;
     }
 
-    public void set_send_to(AddressType _send_to) {
-        this._send_to = _send_to;
+    public void set_receiver(AddressType receiver) {
+        this._receiver = receiver;
     }
 
     public PType getContentType() {
@@ -202,7 +202,7 @@ public class NetPacket {
     public Map<String,Object> prepare2sendPacket() {
 
         return Map.ofEntries(Map.entry("CT",contentType.getLetter()+""),
-                                Map.entry("RCPT",_send_to.getLetter()+""),
+                                Map.entry("RCPT",_receiver.getLetter()+""),
                                 Map.entry("SENDER",_sender.getLetter()+""),
                                 Map.entry("DATA",data.toString()));
     }
@@ -218,7 +218,7 @@ public class NetPacket {
 //                map(String::trim).
 //                collect(Collectors.toMap(x->x.substring(0, x.indexOf("=")).trim(),x->x.substring(x.indexOf("=")+1)));
         if (pmap.containsKey("CT")) contentType=PType.getPT(((String)pmap.get("CT")).charAt(0));
-        if (pmap.containsKey("RCPT")) _send_to=AddressType.getAddressType(((String)pmap.get("RCPT")).charAt(0));
+        if (pmap.containsKey("RCPT")) _receiver=AddressType.getAddressType(((String)pmap.get("RCPT")).charAt(0));
         if (pmap.containsKey("SENDER")) _sender=AddressType.getAddressType(((String)pmap.get("SENDER")).charAt(0));
         if (pmap.containsKey("DATA")) setContent((String)pmap.get("DATA"));
 //        for (int i = 0; i < al.size(); i += 2) {
