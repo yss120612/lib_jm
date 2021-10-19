@@ -197,12 +197,19 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF!=null) androidIF.mp_connectDataReceiverFor(field);
     }
 
+
+
     public void read_db(String field){
         if (androidIF!=null) androidIF.mp_readDB(field);
     }
 
     public void write_db(String field, Map<String,Object> value) {
         if (androidIF!=null) androidIF.mp_writeDB(field,value);
+    }
+
+    public void make_kab(String kabName, String pass){
+        if (androidIF==null) return;
+
     }
 
     @Override
