@@ -32,7 +32,7 @@ public class HighScore implements Comparable {
             return 1;
         }
         HighScore other = (HighScore) o;
-        return -(new Integer(score).compareTo(other.getScore()));
+        return -(Integer.valueOf(score).compareTo(other.getScore()));
         //чем больше тем выше по списку
     }
 
