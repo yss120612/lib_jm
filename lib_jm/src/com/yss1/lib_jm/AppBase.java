@@ -492,6 +492,10 @@ public abstract class AppBase extends SimpleApplication
 
     @Override
     public void dataReceived(Map<String,Object> pID) {
+        if (pID==null){
+            showAndroidMessage("empty","result is null");
+            return;
+        }
         showAndroidMessage("packet",pID.toString());
         if (QNET != null) {
             QNET.receivePacket(pID);
