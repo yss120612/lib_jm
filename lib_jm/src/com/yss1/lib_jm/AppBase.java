@@ -172,19 +172,6 @@ public abstract class AppBase extends SimpleApplication
         return androidIF != null && androidIF.isInterstitialLoaded();
     }
 
-    //public boolean isSignedIn() {
-    //    return (androidIF != null && androidIF.gp_isSignedIn());
-    //}
-
-//    public void connect() {
-//        if (androidIF != null && !androidIF.gp_isSignedIn()) androidIF.gp_Connect();
-//    }
-//
-//    public void disconnect() {
-//        if (androidIF != null) androidIF.gp_Disconnect();
-//    }
-
-
 
 
     @Override
@@ -197,14 +184,18 @@ public abstract class AppBase extends SimpleApplication
         if (androidIF!=null) androidIF.mp_connectDataReceiverFor(field);
     }
 
-
-
     public void read_db(String field){
         if (androidIF!=null) androidIF.mp_readDB(field);
     }
 
     public void write_db(String field, Map<String,Object> value) {
         if (androidIF!=null) androidIF.mp_writeDB(field,value);
+    }
+
+    public void beServer(){
+        if (androidIF != null && !isSignedIn()) {
+            signIn();
+        }
     }
 
     public void make_kab(String kabName, String pass){
@@ -224,9 +215,9 @@ public abstract class AppBase extends SimpleApplication
 //          getUIM().getPlane('P').setMaterial("GP_Active");
 //        }
 
-        if (getUIM() != null) {
-            getUIM().setGPmaterial(true);
-        }
+     //   if (getUIM() != null) {
+     //       getUIM().setGPmaterial(true);
+     //   }
 //
 //        if (!runOnConnect.isEmpty()) {
 //            if (runOnConnect.contains("Achivements")) {
