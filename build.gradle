@@ -20,7 +20,7 @@ allprojects {
 }
 
 //def jme3 = [v:'3.3.2-stable', g:'org.jmonkeyengine']
-def jme3 = [v:'3.4.0-stable', g:'org.jmonkeyengine']
+def jme3 = [v:'3.5.0-stable', g:'org.jmonkeyengine']
 
 project(":lib_jm") {
     apply plugin: "java-library"
