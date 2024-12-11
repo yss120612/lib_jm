@@ -22,6 +22,7 @@ allprojects {
 
 ext.jmonkeyengineVersion = '3.7.0-stable'
 
+
 configurations.all {
     exclude group: 'org.jmonkeyengine', module: 'jme3-desktop'
 }
@@ -32,7 +33,6 @@ project(":lib_jm") {
         implementation 'org.jmonkeyengine:jme3-android:' + jmonkeyengineVersion
         implementation 'org.jmonkeyengine:jme3-android-native:' + jmonkeyengineVersion
         implementation 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
-
         testImplementation 'junit:junit:4.13.2'
     }
 }
