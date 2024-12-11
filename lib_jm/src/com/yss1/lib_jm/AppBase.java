@@ -80,15 +80,15 @@ public abstract class AppBase extends SimpleApplication
         flash = null;
     }
 
-    @Override
-    protected BitmapFont loadGuiFont() {
-        AppState as = getStateManager().getState(StatsAppState.class);
-        if (as != null) {
-            getStateManager().detach(as);
-        }
-        //return getAssetManager().loadFont("Interface/Fonts/Calibri.fnt");
-        return null;
-    }
+//    @Override
+//    protected BitmapFont loadGuiFont() {
+//        AppState as = getStateManager().getState(StatsAppState.class);
+//        if (as != null) {
+//            getStateManager().detach(as);
+//        }
+//        //return getAssetManager().loadFont("Interface/Fonts/Calibri.fnt");
+//        return null;
+//    }
 
     public void flash(ColorRGBA COL, Vector3f v) {
 

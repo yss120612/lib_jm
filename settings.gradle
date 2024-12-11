@@ -1,2 +1,2 @@
-include ':app', ':lib_jm'
+include ':lib_jm'
 rootProject.name = "lib_jm"

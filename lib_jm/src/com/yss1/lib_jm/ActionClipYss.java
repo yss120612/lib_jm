@@ -8,40 +8,39 @@ import com.jme3.anim.tween.action.ClipAction;
 
 
 public class ActionClipYss extends ClipAction {
-    protected AnimClipListener animClipListener;
-    protected AnimComposer animComposer;
-
-    public boolean isLoop() {
-        return loop;
-    }
-
-    public void setLoop(boolean loop) {
-        this.loop = loop;
-    }
-
-    protected boolean loop;
-
     public ActionClipYss(AnimClip clip){
-        super(clip);loop=false;
+        super(clip);
+        loop=false;
     }
 
-    public void setAnimComposer(AnimComposer animComposer){
-    this.animComposer=animComposer;
-    }
-
-    public AnimComposer getAnimComposer() {
-        return animComposer;
-    }
-
+    protected AnimClipListener animClipListener;//Ловит событие окончания анимации
     public void setAnimClipListener(AnimClipListener animClipListener) {
         this.animClipListener = animClipListener;
     }
-
     public AnimClipListener getAnimClipListener()
     {
         return animClipListener;
     }
 
+
+    protected AnimComposer animComposer;//компановщик анимации
+    public void setAnimComposer(AnimComposer animComposer){
+        this.animComposer=animComposer;
+    }
+    public AnimComposer getAnimComposer() {
+        return animComposer;
+    }
+
+    protected boolean loop;//признак зацикливания
+    public boolean isLoop() {
+        return loop;
+    }
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    //Перематывает анимацию на время Т, если больше, чем длительность клипа
+    //анимация прекращается (листенер обрабатывает событие)
     @Override
     public boolean interpolate(double t) {
         boolean result=super.interpolate(t);
@@ -51,6 +50,4 @@ public class ActionClipYss extends ClipAction {
         }
         return result;
     }
-
-
 }

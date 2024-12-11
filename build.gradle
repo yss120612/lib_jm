@@ -2,10 +2,10 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:8.5.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,19 +15,29 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
-//def jme3 = [v:'3.3.2-stable', g:'org.jmonkeyengine']
-def jme3 = [v:'3.5.0-stable', g:'org.jmonkeyengine']
+
+ext.jmonkeyengineVersion = '3.7.0-stable'
+
+configurations.all {
+    exclude group: 'org.jmonkeyengine', module: 'jme3-desktop'
+}
 
 project(":lib_jm") {
     apply plugin: "java-library"
     dependencies {
-        implementation "${jme3.g}:jme3-core:${jme3.v}"
+        implementation 'org.jmonkeyengine:jme3-android:' + jmonkeyengineVersion
+        implementation 'org.jmonkeyengine:jme3-android-native:' + jmonkeyengineVersion
+        implementation 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
+
+        testImplementation 'junit:junit:4.13.2'
     }
 }
+
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
