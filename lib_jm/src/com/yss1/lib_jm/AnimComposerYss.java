@@ -5,20 +5,21 @@ import com.jme3.anim.AnimComposer;
 import com.jme3.anim.tween.action.Action;
 
 public class AnimComposerYss extends AnimComposer {
-    protected AnimClipListener animClipListener;
-
-    public AnimClipListener getAnimClipListener() {
-        return animClipListener;
-    }
-
-    public void setAnimClipListener(AnimClipListener animClipListener) {
-        this.animClipListener = animClipListener;
-    }
-
     public AnimComposerYss(){
         super();
     }
 
+    //Ловит событие окончания анимации
+    protected AnimClipListener animClipListener;
+    public AnimClipListener getAnimClipListener() {
+        return animClipListener;
+    }
+    public void setAnimClipListener(AnimClipListener animClipListener) {
+        this.animClipListener = animClipListener;
+    }
+
+
+    // Create a new ClipAction with specified clip name.
     @Override
     public Action makeAction(String name) {
         ActionClipYss action;

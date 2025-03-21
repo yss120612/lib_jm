@@ -36,15 +36,15 @@ public class Card implements Comparable {
 
         FACE, BACK
     };
-    private int suit;
-    private int rank;
+    private final int suit;
+    private final int rank;
     private int weight;
     public int[] rating;
     private State state;
     private Geometry ge;
     private String name;
     private VectorsPool vPool;
-    private RessKeeper rKeep;
+    private final RessKeeper rKeep;
     private boolean valid;
     private char owner;
     private Vector3f endpointM;//Конечнное положение трансформации
@@ -52,7 +52,7 @@ public class Card implements Comparable {
     private Quaternion endpointRq;
     private float endpointS;
     private Vector3f vdiff;
-    private int stockNo;
+    private final int stockNo;
     public AnimComposerYss animComposerYss;
 
     public Card(RessKeeper stk, String n) {

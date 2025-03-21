@@ -23,7 +23,7 @@ import java.util.Set;
 
 /**
  * @author ys
- *
+ *основа приложения jmonkey
  */
 public abstract class AppBase extends SimpleApplication
         implements

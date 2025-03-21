@@ -13,10 +13,13 @@ import java.util.Set;
  *
  * @author ys
  */
-
+/*
+JmeFragment наследуется от AndroidHarnes воплощает этот интерфейс.
+находится в библиотеке Lib7
+ */
 public interface AndroidIF  {
   
-  
+  //сохранение параметров
   public void saveSettingInt(String k,int v);
   public int  loadSettingInt(String k,int dv);
   public void saveSettingLong(String k,long v);
@@ -30,6 +33,7 @@ public interface AndroidIF  {
   public void removeStrings(ArrayList<String> al);
   public void saveSettingsMap(Map<String,Object> M);
   public Map<String,?> readAll();
+  //конец сохранения параметров
 
   public void displayInterstitial();  
   public boolean isInterstitialLoaded();
