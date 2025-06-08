@@ -5,18 +5,19 @@
 package com.yss1.lib_jm;
 
 import com.jme3.math.Vector2f;
+
 import static com.yss1.lib_jm.Button3d.*;
+
 import java.util.List;
 
 /**
- *
  * @author ys
  */
 public class Button3dBuilder {
     private BTYPE btype;
     private ROT rotate;
     private BSIZE bsize;
-    private BEHAVIOR behav; 
+    private BEHAVIOR behav;
     private int rgroup;
     private List<Button3d> b3DL;
     private ButtonListener bi;
@@ -25,111 +26,99 @@ public class Button3dBuilder {
     private int imgN;//номер имиджа в коллекции
     private List<FaceState> faces;
     private List<FaceState> images;
-   //private Vector2f[] v2;
-    private float x,y,z;
+    //private Vector2f[] v2;
+    private float x, y, z;
     private int sect;
     boolean checked;
     //boolean transparent;
-    
-    public Button3dBuilder(RessKeeper r)
-    {
-        rk=r;
-        btype=BTYPE.PRESS;
-        behav=BEHAVIOR.UPDOWN;
-        rotate=ROT.Y;
-        bsize=BSIZE.LARGE;
-        faces=null;
-        images=null;
-        imgH=0;
-        imgN=0;
+
+    public Button3dBuilder(RessKeeper r) {
+        rk = r;
+        btype = BTYPE.PRESS;
+        behav = BEHAVIOR.UPDOWN;
+        rotate = ROT.Y;
+        bsize = BSIZE.LARGE;
+        faces = null;
+        images = null;
+        imgH = 0;
+        imgN = 0;
         //v2=null;
-        b3DL=null;
-        rgroup=0;
-        checked=false;
-       // transparent=true;
+        b3DL = null;
+        rgroup = 0;
+        checked = false;
+        // transparent=true;
     }
-    
-    public Button3dBuilder setAndInitRadio(int grp, boolean checked)
-    {
-        this.btype=BTYPE.RADIO;
-        this.rgroup=grp;
-        this.checked=checked;
+
+    public Button3dBuilder setAndInitRadio(int grp, boolean checked) {
+        this.btype = BTYPE.RADIO;
+        this.rgroup = grp;
+        this.checked = checked;
         return this;
     }
-    
-    public Button3dBuilder setBtnList(List<Button3d> b3list)
-    {
-        b3DL=b3list;
+
+    public Button3dBuilder setBtnList(List<Button3d> b3list) {
+        b3DL = b3list;
         return this;
     }
-    
-    
-    public Button3dBuilder setIf(ButtonListener bi)
-    {
-        this.bi=bi;
+
+
+    public Button3dBuilder setIf(ButtonListener bi) {
+        this.bi = bi;
         return this;
     }
-    
+
 //    public Button3dBuilder setTransp(boolean transparent)
 //    {
 //        this.transparent=transparent;
 //        return this;
 //    }
-    
-    public Button3dBuilder setType(BTYPE bt)
-    {
-        this.btype=bt;
-        if (bt!=BTYPE.RADIO) rgroup=0;
+
+    public Button3dBuilder setType(BTYPE bt) {
+        this.btype = bt;
+        if (bt != BTYPE.RADIO) rgroup = 0;
         return this;
     }
-    
-    public Button3dBuilder setSize(BSIZE bs)
-    {
-        this.bsize=bs;
+
+    public Button3dBuilder setSize(BSIZE bs) {
+        this.bsize = bs;
         return this;
     }
-    
-    public Button3dBuilder setRot(ROT br)
-    {
-        this.rotate=br;
+
+    public Button3dBuilder setRot(ROT br) {
+        this.rotate = br;
         return this;
     }
-    
-    public Button3dBuilder setFaces(List<FaceState> faces)
-    {
-        this.faces=faces;
+
+    public Button3dBuilder setFaces(List<FaceState> faces) {
+        this.faces = faces;
         return this;
     }
-    
-    public Button3dBuilder setImages(List<FaceState> images,float  imgH)
-    {
-        this.images=images;
-        this.imgH=imgH;
+
+    public Button3dBuilder setImages(List<FaceState> images, float imgH) {
+        this.images = images;
+        this.imgH = imgH;
         return this;
     }
-    
-    
-    public Button3dBuilder setBehav(BEHAVIOR behav)
-    {
-        this.behav=behav;
+
+
+    public Button3dBuilder setBehav(BEHAVIOR behav) {
+        this.behav = behav;
         return this;
     }
-    
-    public Button3dBuilder setPlace(float x,float y,float z)
-    {
-        this.x=x;
-        this.y=y;
-        this.z=z;
+
+    public Button3dBuilder setPlace(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
         return this;
     }
-    
-    public Button3dBuilder setSection(int sect)
-    {
-        this.sect=sect;
+
+    public Button3dBuilder setSection(int sect) {
+        this.sect = sect;
         return this;
     }
-    
-    
+
+
     public Button3d build(String name) {
         Button3d b3 = new Button3d(rk, name, bi, btype, bsize, faces);
         //System.out.println("Bi="+bi);
@@ -153,5 +142,5 @@ public class Button3dBuilder {
         }
         return b3;
     }
-    
+
 }

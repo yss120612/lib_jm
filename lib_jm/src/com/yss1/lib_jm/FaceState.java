@@ -83,10 +83,4 @@ public float calcWidthForHeight(float h)
  return h * (texCoord[2] - texCoord[0]) /(texCoord[5] - texCoord[1])*v.x/v.y;    
 }
 
-//public float getTexW2H()
-//{
-//    Vector2f v=rk.getRess().getTexDim4Material(matKey);
-//    return v.x/v.y;
-//}
-
 }

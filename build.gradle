@@ -20,7 +20,7 @@ allprojects {
 }
 
 
-ext.jmonkeyengineVersion = '3.7.0-stable'
+ext.jmonkeyengineVersion = '3.8.1-stable'
 
 
 configurations.all {
@@ -38,6 +38,3 @@ project(":lib_jm") {
 }
 
 
-tasks.register('clean', Delete) {
-    delete rootProject.buildDir
-}
