@@ -24,16 +24,15 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
+
 import java.nio.FloatBuffer;
 
 /**
- *
  * @author ys
  */
 public class Card implements Comparable {
 
     public static enum State {
-
         FACE, BACK
     };
     private final int suit;
@@ -56,7 +55,7 @@ public class Card implements Comparable {
     public AnimComposerYss animComposerYss;
 
     public Card(RessKeeper stk, String n) {
-        stockNo=0;
+        stockNo = 0;
         rKeep = stk;
         suit = ToolsBase.getSuit(n);
         rank = ToolsBase.getRank(n);
@@ -67,9 +66,9 @@ public class Card implements Comparable {
         init();
     }
 
-    public Card(RessKeeper stk,int k, int r, int s) {//Joker (R) must be a C od D suit (i.e. RC or RD name)
+    public Card(RessKeeper stk, int k, int r, int s) {//Joker (R) must be a C od D suit (i.e. RC or RD name)
         rKeep = stk;
-        stockNo=k;
+        stockNo = k;
         switch (r) {
             case 2:
             case 3:
@@ -238,7 +237,6 @@ public class Card implements Comparable {
     public void setEndpointM(float x, float y, float z) {
         this.endpointM.set(x, y, z);
     }
-    
 
     public Vector3f getEndpointRv() {
         return endpointRv;
@@ -273,26 +271,24 @@ public class Card implements Comparable {
         setEndpointS(C.getGe().getLocalScale().x);
     }
 
-     public void setTransformLike(Card C) {
+    public void setTransformLike(Card C) {
         if (C == null || C.getGe() == null) {
             return;
         }
         getGe().setLocalTransform(C.getGe().getLocalTransform());
     }
-     
-    
+
     public void setEndpointLikeNotZ(Card C) {
         if (C == null || C.getGe() == null) {
             return;
         }
-        endpointM.x=C.getGe().getLocalTranslation().x;
-        endpointM.y=C.getGe().getLocalTranslation().y;
-        endpointM.z=getGe().getLocalTranslation().z;//своя
+        endpointM.x = C.getGe().getLocalTranslation().x;
+        endpointM.y = C.getGe().getLocalTranslation().y;
+        endpointM.z = getGe().getLocalTranslation().z;//своя
         setEndpointRq(C.getGe().getLocalRotation());
         setEndpointS(C.getGe().getLocalScale().x);
     }
-    
-    
+
     public void setEndpointLikeEndpoint(Card C) {
         if (C == null || C.getGe() == null) {
             return;
@@ -301,7 +297,6 @@ public class Card implements Comparable {
         setEndpointRq(C.getEndpointRq());
         setEndpointS(C.getEndpointS());
     }
-
 
     public float getEndpointS() {
         return endpointS;
@@ -313,7 +308,7 @@ public class Card implements Comparable {
 
     public void applyEndpoint() {
         ge.setLocalRotation(endpointRq.clone());
-        ge.setLocalTranslation(endpointM.x,endpointM.y,endpointM.z);
+        ge.setLocalTranslation(endpointM.x, endpointM.y, endpointM.z);
         ge.setLocalScale(endpointS);
     }
 
@@ -345,11 +340,11 @@ public class Card implements Comparable {
     }
 
     public String getAnim() {
-        return animComposerYss.getCurrentAction()!=null?animComposerYss.getCurrentAction().toString():"";
+        return animComposerYss.getCurrentAction() != null ? animComposerYss.getCurrentAction().toString() : "";
     }
 
     public boolean isIdle() {
-        return animComposerYss == null || animComposerYss.getCurrentAction()==null;
+        return animComposerYss == null || animComposerYss.getCurrentAction() == null;
     }
 
     public char getOwner() {
@@ -412,11 +407,9 @@ public class Card implements Comparable {
     }
 
     public String getName() {
-        return stockNo==0?name:name+"*"+stockNo;
+        return stockNo == 0 ? name : name + "*" + stockNo;
     }
 
-    
-    
     private void init() {
         vPool = ToolsBase.vPool;
         owner = 'N';
@@ -425,9 +418,8 @@ public class Card implements Comparable {
         //int i = rKeep.getRess().getTX_H();
     }
 
-
     public void setDiff(Geometry plane, Vector3f v0, Vector3f vCam, boolean flyUp) {//v0 точка, кде коснулись карты в координатах RootNode
-        float dx = v0.x; 
+        float dx = v0.x;
         float dy = v0.y;
         if (flyUp) {
             ge.move(0, 0, 0.8f);
@@ -457,11 +449,11 @@ public class Card implements Comparable {
         vPool.freeRay(ray);
     }
 
-    public void shift4Show(Geometry plane, Vector3f v0, Vector3f vCam,float up) {//v0 точка, кде коснулись карты в координатах RootNode
-        float dx = v0.x; 
+    public void shift4Show(Geometry plane, Vector3f v0, Vector3f vCam, float up) {//v0 точка, кде коснулись карты в координатах RootNode
+        float dx = v0.x;
         float dy = v0.y;
         ge.move(0, 0, up);
-        
+
         Ray ray = vPool.getRay(vCam, v0.subtract(vCam));
         ge.getParent().attachChild(plane);
         plane.setLocalTranslation(ge.getLocalTranslation());
@@ -475,8 +467,7 @@ public class Card implements Comparable {
         vPool.freeColl(CRes);
         vPool.freeRay(ray);
     }
-    
-    
+
     public Vector3f getDiff() {
         return vdiff;
     }
@@ -520,18 +511,18 @@ public class Card implements Comparable {
         Nc14 = 1f - Nc14 * Ly;
 
         float tx[] = new float[]{No14, Nc14 - Ly,
-            No14 + Lx, Nc14 - Ly,
-            No14, Nc14,
-            No14 + Lx, Nc14,
-            (bk) * Lx, 1f - Ly * 5,
-            (bk - 1) * Lx, 1f - Ly * 5,
-            (bk) * Lx, 1f - Ly * 4,
-            (bk - 1) * Lx, 1f - Ly * 4};
+                No14 + Lx, Nc14 - Ly,
+                No14, Nc14,
+                No14 + Lx, Nc14,
+                (bk) * Lx, 1f - Ly * 5,
+                (bk - 1) * Lx, 1f - Ly * 5,
+                (bk) * Lx, 1f - Ly * 4,
+                (bk - 1) * Lx, 1f - Ly * 4};
 
         Mesh ME = ToolsBase.makeSimple2planes(cW, cH, cTH, tx);
         ge = new Geometry(getName(), ME);
         ge.setQueueBucket(RenderQueue.Bucket.Opaque);
-        animComposerYss=new AnimComposerYss();
+        animComposerYss = new AnimComposerYss();
         animComposerYss.setAnimClipListener(AEL);
         ge.addControl(animComposerYss);
 
@@ -543,21 +534,11 @@ public class Card implements Comparable {
         //control.addAnim(new Animation("Idle", 0));
         //channel = control.createChannel();
     }
-    
-
-//    public AnimControl getControl() {
-//        return control;
-//    }
-//
-//    public AnimChannel getChannel() {
-//        return channel;
-//    }
-//    private AnimChannel channel;
 
     public void setRotatedEndpoint(boolean XorY) {
         //resetEndpoint();
-        System.out.println("rotate \n"+ge.getLocalTranslation());
-        
+        System.out.println("rotate \n" + ge.getLocalTranslation());
+
         //System.out.println(ge.getLocalTranslation()+"------------\n");
         //setIdleAnim();
         Transform TR = ge.getLocalTransform();
@@ -573,7 +554,7 @@ public class Card implements Comparable {
         setEndpointRq(TR.getRotation().mult(Q1));
         vPool.freeV3(RV);
         vPool.freeQt(Q1);
-       // Q1.nlerp(Q1, endpointS);
+        // Q1.nlerp(Q1, endpointS);
     }
 
     public void invertState() {
@@ -615,12 +596,12 @@ public class Card implements Comparable {
     }
 
     public void resetEndpoint() {
-        endpointM.set(0f,0f,0f);
-        endpointS=1f;
-        endpointRv.set(0f,0f,0f);
-        endpointRq.fromAngles(0f,0f,0f);
+        endpointM.set(0f, 0f, 0f);
+        endpointS = 1f;
+        endpointRv.set(0f, 0f, 0f);
+        endpointRq.fromAngles(0f, 0f, 0f);
     }
-    
+
     public void rotate() {
         invertState();
         float A;

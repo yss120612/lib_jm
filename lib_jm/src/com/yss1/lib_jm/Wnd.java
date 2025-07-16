@@ -231,7 +231,7 @@ public class Wnd implements
             caption.setColor(ColorRGBA.Orange);
             caption.setQueueBucket(RenderQueue.Bucket.Translucent);
             nodeWnd.attachChild(caption);
-            caption.setLocalTranslation(-Dx+textPad()*4, Dy, geo[4].getLocalTranslation().z+0.03f);
+            caption.setLocalTranslation(-Dx+textPad()*5.2f, Dy, geo[4].getLocalTranslation().z+0.03f);
         }
         caption.setText(cpt);
     }
@@ -353,13 +353,13 @@ public class Wnd implements
         fsList.add(new FaceState(rKeeper).init("ОбщийПрозрачный", new float[]{X1, Y1, X2, Y1, X1, Y2, X2, Y2}));
 
         Button3d b3d = builder.setFaces(fsList).
-                setPlace(-Dx / 1.8f, -Dy + SettBase.BTN_H * 1.2f, 0.3f).
+                setPlace(-Dx / 2.2f, -Dy + SettBase.BTN_H * 1.2f, 0.3f).
                 setSize(Button3d.BSIZE.SMALL).
                 build("pubtn_left"+name);
         buttons.add(b3d);
         nodeWnd.attachChild(b3d.getGe());
 
-        b3d = builder.setPlace(Dx / 1.8f, -Dy + SettBase.BTN_H * 1.2f, 0.3f).build("pubtn_right"+name);
+        b3d = builder.setPlace(Dx / 2.2f, -Dy + SettBase.BTN_H * 1.2f, 0.3f).build("pubtn_right"+name);
         buttons.add(b3d);
         nodeWnd.attachChild(b3d.getGe());
 

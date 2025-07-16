@@ -277,7 +277,17 @@ public class RessBase {
     */
     public float getTextH(float H) {
         if (TX_H > 0) {
-            return H/ TX_H;
+            return H/(float)TX_H;
+        }
+        return 0;
+    }
+
+    /*
+    текстурная ширина для главной текстуры при ширине L пикселов
+    */
+    public float getTextL(float L) {
+        if (TX_W > 0) {
+            return L/(float)TX_W;
         }
         return 0;
     }

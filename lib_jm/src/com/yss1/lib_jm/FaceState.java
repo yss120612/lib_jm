@@ -64,6 +64,7 @@ public void applyTo(Geometry ge)
     if (texCoord==null || material==null || ge==null) throw new RuntimeException("FaceState.applyTo Coordinates or material not prepared");  
     ge.setMaterial(material);
     FloatBuffer fbuff = ge.getMesh().getFloatBuffer(VertexBuffer.Type.TexCoord);
+    fbuff.clear();
     fbuff.put(texCoord);
     ge.getMesh().scaleTextureCoordinates(scaleTx);
 }
