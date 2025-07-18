@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'com.android.tools.build:gradle:8.11.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,17 +23,35 @@ allprojects {
 ext.jmonkeyengineVersion = '3.8.1-stable'
 
 
-configurations.all {
+configurations.configureEach {
     exclude group: 'org.jmonkeyengine', module: 'jme3-desktop'
 }
 
 project(":lib_jm") {
     apply plugin: "java-library"
     dependencies {
-        implementation 'org.jmonkeyengine:jme3-android:' + jmonkeyengineVersion
+      //  implementation 'org.jmonkeyengine:jme3-android:' + jmonkeyengineVersion
         implementation 'org.jmonkeyengine:jme3-android-native:' + jmonkeyengineVersion
         implementation 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
         testImplementation 'junit:junit:4.13.2'
+     //   testImplementation 'org.mockito:mockito-core:5.18.0'
+        //testImplementation 'org.testng:testng:6.9.6'
+        //testImplementation 'junit:junit:4.12'
+    }
+
+    configurations {
+        mockitoAgent
+    }
+    dependencies {
+        testImplementation('org.mockito:mockito-core:5.18.0')
+        mockitoAgent('org.mockito:mockito-core:5.18.0') {
+            transitive = false
+        }
+    }
+    tasks {
+        test {
+            jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
+        }
     }
 }
 
